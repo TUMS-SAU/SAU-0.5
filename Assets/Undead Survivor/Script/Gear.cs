@@ -9,6 +9,7 @@ public class Gear : MonoBehaviour
     public ItemData.ItemType type;
     public float rate;
 
+    // Weapon과 동일하게 초기화 함수 작성
     //초기화 함수
     public void Init(ItemData data)
     {
@@ -24,10 +25,11 @@ public class Gear : MonoBehaviour
         ApplyGear(); 
     }
 
+    // Weapon과 동일하게 레벨업 함수 작성
     public void LevelUp(float rate)
     {
         this.rate = rate;
-        //레벨업 할 때 로직적용 함수를 호출
+        // 장비가 새롭게 추가되거나 레벨업 할 때 로직적용 함수를 호출
         ApplyGear();
     }
 
@@ -46,12 +48,14 @@ public class Gear : MonoBehaviour
         }
     }
 
+    // 장갑의 기능인 연사력을 올리는 함수 작성
     void RateUp() //공속을 올리는 함수
     {
         //플레이어로 올라가서 모든 weapon을 가져오기
         Weapon[] weapons = transform.parent.GetComponentsInChildren<Weapon>();
-        
-        foreach(Weapon weapon in weapons) {
+
+        // foreach문으로 하나씩 순회하면서 타입에 따라 속도 올리기
+        foreach (Weapon weapon in weapons) {
             switch(weapon.id) {
                 //근접무기
                 case 0:
@@ -67,6 +71,7 @@ public class Gear : MonoBehaviour
         }
     }
 
+    // 신발의 기능인 이동 속도를 올리는 함수 작성
     void SpeedUp() //이속을 올리는 함수
     {
         float speed = 3 * Character.Speed;
