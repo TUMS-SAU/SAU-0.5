@@ -7,8 +7,11 @@ using UnityEngine.UI; //UI 컴포넌트를 사용할 때는 UnityEngine.UI 네�
 public class HUD : MonoBehaviour
 {
     public enum InfoType{Exp, Level, Kill, Time, Health} //다루게 될 데이터를 미리 열거형 enum으로 선언
+    // 선언한 열거형을 타입으로 변수 추가
     public InfoType type;
 
+    // UI 컴포넌트를 사용할 때는 UnityEngine.UI 네임스페이스 사용
+    // Text와 Slider 변수 선언 및 초기화
     Text myText;
     Slider mySlider;
 
@@ -18,6 +21,7 @@ public class HUD : MonoBehaviour
         mySlider = GetComponent<Slider>();
     }
 
+    // LateUpdate에서 switch~case문으로 로직 나누기
     void LateUpdate()
     {
         switch(type){
@@ -28,10 +32,13 @@ public class HUD : MonoBehaviour
                 mySlider.value = curExp / maxExp;
                 break;
             case InfoType.Level:
-                myText.text = string.Format("Lv.{0:F0}",GameManager.instance.level);
                 //Format : 각 숫가 인자값을 지정된 형태의 문자열로 만들어주는 함수
+                // Format(Format을 쓸 타입, 해당 Format에 적용되는 데이터)
+                // 인자 값의 문자열이 들어갈 자리를 {순번} 형태로 작성
+                // F0, F1, F2... : 소수점 자리를 지정
                 //Format(바꿔서 쓰는 값, 바꾸는 값) F0, F1, F2, ..., : 소수점 자리를 지정
                 //{인덱스번호 : 숫자에 대한 형태}
+                myText.text = string.Format("Lv.{0:F0}",GameManager.instance.level);
                 break;
             case InfoType.Kill:
                 myText.text = string.Format("{0:F0}",GameManager.instance.kill);
@@ -40,13 +47,17 @@ public class HUD : MonoBehaviour
                 //흐르는 시간이 아닌 남은 시간부터 구하기
                 float remainTime = GameManager.instance.maxGameTime - GameManager.instance.gameTime;
                 //남은 시간을 분과 초로 분리
+                // 수학 관련 함수들은 모두 Mathf 안에 있다
                 int min = Mathf.FloorToInt(remainTime / 60); //60으로 나누어 분을 구하되 FloorToInt로 소수점 버리기
+                // A % B : A를 B로 나누고 남은 나머지
                 int sec = Mathf.FloorToInt(remainTime % 60); //60으로 나누고 남은 나머지 
-                
+
+                // D0, D1, D2... : 자리 수를 지정
                 myText.text = string.Format("{0:D2}:{1:D2}",min,sec);
                 //D0, D1, D2, ..., : 자리 수를 지정 -> 00:00형식으로 보이게 지정
                 break;
             case InfoType.Health:
+                // 체력 로직은 경험치 코드를 재활용하여 작성
                 float curHealth = GameManager.instance.health;
                 float maxHealth = GameManager.instance.maxHealth;
                 mySlider.value = curHealth / maxHealth;

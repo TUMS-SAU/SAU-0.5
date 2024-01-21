@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Item", menuName = "Scriptable Object/ItemData")] 
 //CreateAssetMenu : 커스텀 메뉴를 생성하는 속성, 이렇게 하면 우클릭시에 scriptable object -> ItemData로 가면 itemData를 편하게 생성할 수 있음
+[CreateAssetMenu(fileName = "Item", menuName = "Scriptable Object/ItemData")]
+// 더 이상 MonoBehaviour가 아닌 ScriptableObject이다
+//public class ItemData : MonoBehaviour
 public class ItemData : ScriptableObject
 {
+    // enum 열거형 데이터는 정수 형태로도 사용 가능
     //아이템 타입을 간단하게 관리할 수 있도록 enum으로 저장
     public enum ItemType {Melee, Range, Glove, Shoe, Heal} //근접공격, 원거리공격, 글러브, 신발, 체력포션
 
@@ -14,6 +17,7 @@ public class ItemData : ScriptableObject
     public ItemType itemType;
     public int itemId;
     public string itemName;
+    // 인스펙터에 텍스트를 여러 줄 넣을 수 있게 TextArea 속성 부여
     [TextArea]
     public string itemDesc;
     public Sprite itemIcon; //스프라이트를 담을 수 있어야 함
@@ -26,5 +30,6 @@ public class ItemData : ScriptableObject
     
     [Header("# Weapon")]
     public GameObject projectile;
+    // 스크립터블 오브젝트 코드에서 손 스프라이트를 담은 속성 추가
     public Sprite hand;
 }

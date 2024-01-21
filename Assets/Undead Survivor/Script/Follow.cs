@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Follow : MonoBehaviour
 {
+    // UI에는 Transform과 RectTransform이 있다
+    // RectTransform은 Transform과 달리 선언 및 초기화를 해줘야 한다
+    // RectTransform 변수 선언 및 초기화
     RectTransform rect; 
 
     void Awake()

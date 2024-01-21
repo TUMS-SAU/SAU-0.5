@@ -6,6 +6,7 @@ using UnityEngine.PlayerLoop;
 
 public class AudioManager : MonoBehaviour
 {
+    // 정적 메모리에 담기 위한 instance 변수 선언
     public static AudioManager instance;
 
     [Header("#BGM")]
@@ -15,6 +16,7 @@ public class AudioManager : MonoBehaviour
     AudioSource bgmPlayer;
     AudioHighPassFilter bgmEffect; //배경음을 잠깐 멈추기 위한 변수 설정
 
+    // 코드 복사하여 효과음 코드로 편집
     [Header("#SFX")]
     //효과음과 관련된 클립, 볼륨, 오디오소스 변수 선언
     public AudioClip[] sfxClips;
@@ -24,6 +26,8 @@ public class AudioManager : MonoBehaviour
     AudioSource[] sfxPlayers;
     int channelIndex;
 
+    // 효과음과 1:1 대응하는 열거형 데이터 선언
+    // 열거형 데이터는 대응하는 숫자를 지정할 수 있어요.
     public enum Sfx { Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win}
 
     void Awake()
@@ -42,6 +46,7 @@ public class AudioManager : MonoBehaviour
         bgmPlayer.loop = true;
         bgmPlayer.volume = bgmVolume;
         bgmPlayer.clip = bgmClip;
+        // 메인 카메라 접근은 Camera 클래스를 사용하면 간편해요.
         bgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
 
         //효과음 플레이어 초기화 
@@ -54,11 +59,13 @@ public class AudioManager : MonoBehaviour
         {
             sfxPlayers[index] = sfxObject.AddComponent<AudioSource>();
             sfxPlayers[index].playOnAwake = false;
+            // 효과음 초기화 하는 부분에 byPassListenerEffects를 true로 변경
             sfxPlayers[index].bypassListenerEffects = true; //효과음은 배경음처럼 꺼지지 않도록 추가 설정  
             sfxPlayers[index].volume = sfxVolume;
         }
     }
 
+    // 배경음을 재생하는 함수 작성
     public void PlayBgm(bool isPlay)
     {
         if (isPlay){
@@ -69,11 +76,14 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // 필터를 켜고 끄는 함수도 작성
     public void EffectBgm(bool isPlay)
     {
         //레벨업 후 무기 선택시에 잠깐 배경음 줄이기
         bgmEffect.enabled = isPlay;
     }
+
+    // 효과음 재생 함수 작성
     public void PlaySfx(Sfx sfx)
     {
         for (int index = 0; index < sfxPlayers.Length; index++)
@@ -82,6 +92,7 @@ public class AudioManager : MonoBehaviour
             int loopIndex = (index + channelIndex) % sfxPlayers.Length;
 
             if (sfxPlayers[loopIndex].isPlaying)
+                // continue : 반복문 도중 다음 루프로 건너뛰는 키워드
                 continue; //반복문 도중 다음 루프로 건너뛰기
 
             //효과음이 2개 이상인 것은 랜덤 인덱스를 더하기
@@ -93,6 +104,7 @@ public class AudioManager : MonoBehaviour
             
             channelIndex = loopIndex;
             sfxPlayers[0].clip = sfxClips[(int)sfx + ranIndex];
+            // 오디오소스의 클립을 변경하고 Play 함수 호출
             sfxPlayers[0].Play();
             break; //효과음 재생이 된 경우에는 break로 루프 종료
         }

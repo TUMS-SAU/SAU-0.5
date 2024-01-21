@@ -6,6 +6,7 @@ public class Result : MonoBehaviour
 {
     public GameObject[] titles;
 
+    // 이미지 오브젝트를 활성화하는 승리, 패배 함수 하나씩 작성
     public void Lose()
     {
         titles[0].SetActive(true);
