@@ -101,7 +101,12 @@ public class Item : MonoBehaviour
             level++;
             break;
             case ItemData.ItemType.Heal:
-                GameManager.instance.health = GameManager.instance.maxHealth;
+                float healthrecover = GameManager.instance.health + 50;
+                if (GameManager.instance.maxHealth - GameManager.instance.health > 50)
+                    GameManager.instance.health = healthrecover;
+                    
+                else 
+                    GameManager.instance.health = GameManager.instance.maxHealth;
             break;
         }
 
