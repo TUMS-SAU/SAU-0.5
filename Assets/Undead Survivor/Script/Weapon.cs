@@ -54,9 +54,8 @@ public class Weapon : MonoBehaviour
         if (id == 0)
             Batch();
 
-        if (id == 2 || id == 3)
-            player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver); 
-            Debug.Log("ApplyGear"); 
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver); 
+        Debug.Log("ApplyGear"); 
         //아이템을 누를 때 데미지 카운트가 적용되므로, 기어 데미지가 초기화 될 수 있기 때문에 적용
     }
 
@@ -100,9 +99,8 @@ public class Weapon : MonoBehaviour
         hand.spriter.sprite = data.hand;
         hand.gameObject.SetActive(true);
 
-        if (id ==2 || id ==3)
-            player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
-            Debug.Log("ApplyGear"); 
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
+        Debug.Log("ApplyGear"); 
         //BroadcastMessage : 특정 함수 호출을 모든 자식에게 방송하는 함수
         ///player가 가지고 있는 모든 기어에 한해서 applyGear가 되도록 하는 것
         ///오류를 막기 위해 DontRequireReceiver를 두번째 인자값으로 추가

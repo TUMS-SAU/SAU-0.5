@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ public class Gear : MonoBehaviour
         rate = data.damages[0];
         //처음에 장비가 새롭게 추가될 때 로직 적용 함수를 호출
         ApplyGear(); 
+        ApplyGearnew();
     }
 
     public void LevelUp(float rate)
@@ -29,6 +31,7 @@ public class Gear : MonoBehaviour
         this.rate = rate;
         //레벨업 할 때 로직적용 함수를 호출
         ApplyGear();
+        ApplyGearnew();
     }
 
     //타입에 따라 적절하게 로직을 적용시켜주는 함수 추가
@@ -43,9 +46,17 @@ public class Gear : MonoBehaviour
                 //신발은 플레이어의 이동속도를 올림
                 SpeedUp();
                 break;
+            
+        }
+    }
+
+    void ApplyGearnew()
+    {
+        switch(type){
             case ItemData.ItemType.Gym:
                 //아령은 최대 체력을 올림
                 MaxhealthUp();
+                Debug.Log("ApplyGearForGym");
                 break;
         }
     }
