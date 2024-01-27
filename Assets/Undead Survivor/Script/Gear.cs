@@ -43,6 +43,10 @@ public class Gear : MonoBehaviour
                 //신발은 플레이어의 이동속도를 올림
                 SpeedUp();
                 break;
+            case ItemData.ItemType.Gym:
+                //아령은 최대 체력을 올림
+                MaxhealthUp();
+                break;
         }
     }
 
@@ -72,5 +76,11 @@ public class Gear : MonoBehaviour
         float speed = 3 * Character.Speed;
         GameManager.instance.player.speed = speed + speed * rate;
 
+    }
+
+    void MaxhealthUp()
+    {
+        float maxHealth = GameManager.instance.maxHealth;
+        GameManager.instance.maxHealth = maxHealth + maxHealth * rate;
     }
 }

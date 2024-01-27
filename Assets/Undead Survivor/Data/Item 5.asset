@@ -10,16 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03afee9e7adce2a46b5ece0f251d207e, type: 3}
-  m_Name: Item 4
+  m_Name: Item 5
   m_EditorClassIdentifier: 
   itemType: 4
-  itemId: 4
-  itemName: 
-  itemDesc: 
-  itemIcon: {fileID: 0}
+  itemId: 5
+  itemName: "\uC74C\uB8CC\uC218"
+  itemDesc: "\uC0DD\uBA85\uB825 50 \uD68C\uBCF5"
+  itemIcon: {fileID: 927338625, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   baseDamage: 0
   baseCount: 0
-  damages: []
-  counts: 
+  damages:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  counts: 0000000000000000000000000000000000000000
   projectile: {fileID: 0}
   hand: {fileID: 0}
