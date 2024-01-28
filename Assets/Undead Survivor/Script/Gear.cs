@@ -23,7 +23,7 @@ public class Gear : MonoBehaviour
         rate = data.damages[0];
         //처음에 장비가 새롭게 추가될 때 로직 적용 함수를 호출
         ApplyGear(); 
-        ApplyGearnew();
+        ApplyGearHealth();
     }
 
     public void LevelUp(float rate)
@@ -31,14 +31,14 @@ public class Gear : MonoBehaviour
         this.rate = rate;
         //레벨업 할 때 로직적용 함수를 호출
         ApplyGear();
-        ApplyGearnew();
+        ApplyGearHealth();
     }
 
     //타입에 따라 적절하게 로직을 적용시켜주는 함수 추가
     void ApplyGear()
     {
         switch(type) {
-            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Alco:
                 //장갑은 무기 속도를 올림
                 RateUp();
                 break;
@@ -54,7 +54,7 @@ public class Gear : MonoBehaviour
         }
     }
 
-    void ApplyGearnew()
+    void ApplyGearHealth()
     {
         switch(type){
             case ItemData.ItemType.Gym:

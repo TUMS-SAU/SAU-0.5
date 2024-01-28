@@ -43,7 +43,7 @@ public class Item : MonoBehaviour
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
                 //데미지 % 상승을 보여줄 땐 100 곱하기
                 break;
-            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Alco:
             case ItemData.ItemType.Shoe:
             case ItemData.ItemType.Gym:
             case ItemData.ItemType.Coffee:
@@ -89,7 +89,7 @@ public class Item : MonoBehaviour
             }
             level++;
             break;
-            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Alco:
             case ItemData.ItemType.Shoe:
             case ItemData.ItemType.Gym:
             case ItemData.ItemType.Coffee:
