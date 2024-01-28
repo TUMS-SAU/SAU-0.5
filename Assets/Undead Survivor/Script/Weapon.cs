@@ -92,6 +92,8 @@ public class Weapon : MonoBehaviour
             default: //원거리 무기 : 총
                 speed = 0.5f * Character.WeaponRate;
                 break;
+            
+
         }
         //Head Set
         Hand hand = player.hands[(int)data.itemType]; //enum의 데이터는 정수 형태로도 사용 가능

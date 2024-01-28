@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 4
   itemId: 4
-  itemName: 
-  itemDesc: 
-  itemIcon: {fileID: 0}
+  itemName: "\uC544\uB839"
+  itemDesc: "\uC0DD\uBA85\uB825 {0}% \uC99D\uAC00"
+  itemIcon: {fileID: -1002307068, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   baseDamage: 0
   baseCount: 0
-  damages: []
-  counts: 
+  damages:
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
+  counts: 0000000000000000000000000000000000000000
   projectile: {fileID: 0}
   hand: {fileID: 0}

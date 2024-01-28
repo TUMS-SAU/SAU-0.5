@@ -46,6 +46,10 @@ public class Gear : MonoBehaviour
                 //신발은 플레이어의 이동속도를 올림
                 SpeedUp();
                 break;
+            case ItemData.ItemType.Coffee:
+                //아.아는 무기의 데미지를 올림
+                DamageUp();
+                break;
             
         }
     }
@@ -93,5 +97,20 @@ public class Gear : MonoBehaviour
     {
         float maxHealth = GameManager.instance.maxHealth;
         GameManager.instance.maxHealth = maxHealth + maxHealth * rate;
+    }
+
+    void DamageUp()
+    {
+        //플레이어로 올라가서 모든 weapon을 가져오기
+        Weapon[] weapons = transform.parent.GetComponentsInChildren<Weapon>();
+
+        foreach(Weapon weapon in weapons){
+            switch(weapon.id){
+                default:
+                    float damage = weapon.damage;
+                    weapon.damage = damage + damage * rate;
+                    break;
+            }
+        }
     }
 }

@@ -46,6 +46,7 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
             case ItemData.ItemType.Gym:
+            case ItemData.ItemType.Coffee:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level]);
                 break;
             default:
@@ -91,6 +92,7 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
             case ItemData.ItemType.Gym:
+            case ItemData.ItemType.Coffee:
                 if (level == 0) {
                     GameObject newGear = new GameObject();
                     gear = newGear.AddComponent<Gear>(); //AddComponenet 함수 반환 값을 미리 선언한 변수에 저장
