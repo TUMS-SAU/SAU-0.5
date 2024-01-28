@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     
     public float speed; //속도 관리 변수
     public Scanner scanner; //플레이어 스크립트에서 검색 클래스 타입 변수 선언 및 초기화
+    public NoteBookScanner nbscanner; //노트북 용 스캐너
     public Hand[] hands;
     public RuntimeAnimatorController[] animCon; //여러 애니메이터 컨트롤러를 저장할 배열 변수 
 
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
+        nbscanner = GetComponent<NoteBookScanner>();
         hands = GetComponentsInChildren<Hand>(true); //인자값에 true를 넣으면 비활성화된 오브젝트도 인식한다. 
     }
 
@@ -30,16 +32,6 @@ public class Player : MonoBehaviour
         anim.runtimeAnimatorController = animCon[GameManager.instance.playerId];
     }
 
-    // void Update()
-    // {
-    //      if(!GameManager.instance.isLive)
-    //          return;
-    //     inputVec.x = Input.GetAxisRaw("Horizontal");
-    //     inputVec.y = Input.GetAxisRaw("Vertical");
-    //     // GetAxisRaw로 더욱 명확한 컨트롤 가능 딱딱 숫자가 떨어지는 컨트롤
-    //     // GetAxis로 하면 자동 보정됨, 좀 미끄러짐
-    // }
-    
     //FixedUpdate : 물리 연산 프레임마다 호출되는 생명주기 함수
     void FixedUpdate()
     {

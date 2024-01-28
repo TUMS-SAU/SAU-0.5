@@ -40,6 +40,7 @@ public class Item : MonoBehaviour
         switch(data.itemType){
             case ItemData.ItemType.Melee:
             case ItemData.ItemType.Range:
+            case ItemData.ItemType.Bomb:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
                 //데미지 % 상승을 보여줄 땐 100 곱하기
                 break;
@@ -67,6 +68,7 @@ public class Item : MonoBehaviour
         switch (data.itemType){
             case ItemData.ItemType.Melee: 
             case ItemData.ItemType.Range:
+            case ItemData.ItemType.Bomb:
             //여러개의 case를 붙여서 로직을 실행하게 할 수 있음
             //같은 로직이므로 같이 묶어서 코드 실행
             if (level == 0) {
