@@ -81,13 +81,15 @@ public class Item : MonoBehaviour
             else {
                 float nextDamage = data.baseDamage;
                 int nextCount = 0;
+                float nextSpeed = data.baseSpeed;
 
                 //처음 이후의 레벨업은 데미지와 횟수를 계산
                 nextDamage += data.baseDamage * data.damages[level];
                 nextCount += data.counts[level];
+                nextSpeed += data.baseSpeed * data.speedRate[level];
 
                 //weapon에 작성된 레벨업 함수를 활용하여 레벨업 적용
-                weapon.LevelUp(nextDamage, nextCount);
+                weapon.LevelUp(nextDamage, nextCount, nextSpeed);
             }
             level++;
             break;

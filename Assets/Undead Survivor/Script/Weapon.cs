@@ -53,10 +53,11 @@ public class Weapon : MonoBehaviour
         //     LevelUp(10, 1);
     }
 
-    public void LevelUp(float damage,int count)
+    public void LevelUp(float damage,int count, float speed)
     {
         this.damage = damage * Character.Damage;
         this.count += count;
+        this.speed = speed;
 
 
         if (id == 0)
@@ -101,7 +102,7 @@ public class Weapon : MonoBehaviour
                 speed = 1f * Character.WeaponRate;
                 break;
             
-            default: //원거리 무기 : 폭탄
+            default: //원거리 무기 : 총
                 speed = 1f * Character.WeaponRate;
                 break;
             
