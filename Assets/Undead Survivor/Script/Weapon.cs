@@ -18,7 +18,7 @@ public class Weapon : MonoBehaviour
     float timer;
     Player player;
 
-    public SpriteRenderer[] weaponRenderers;
+    //public SpriteRenderer[] weaponRenderers;
     public float disappearDuration = 1f;
     public float appearDuration = 5f;
 
@@ -139,7 +139,7 @@ public class Weapon : MonoBehaviour
     void Batch() //Batch : 자료를 모아 두었다가 일괄해서 처리하는 자료처리의 형태
     {
         
-
+        SpriteRenderer[] weaponRenderers = new SpriteRenderer[count];
         for (int index = 0; index < count; index++){ 
             Transform bullet; 
             
@@ -157,10 +157,9 @@ public class Weapon : MonoBehaviour
                 bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
                 
                 
-                Debug.Log("Bullet들어감");
+                Debug.Log("Bullet생성");
             }
                 
-            
             
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
@@ -184,6 +183,7 @@ public class Weapon : MonoBehaviour
 
      IEnumerator DisappearAppearCoroutine(SpriteRenderer[] renderers)
     {
+
         float elapsedTime = 0f;
 
         while (elapsedTime < disappearDuration)
