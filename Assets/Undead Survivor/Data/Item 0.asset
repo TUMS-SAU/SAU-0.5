@@ -33,5 +33,5 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  projectile: {fileID: 8462090051115702122, guid: 56f6efd7be4fdc64e9fdfd4623e86800, type: 3}
+  projectile: {fileID: 8462090051115702122, guid: cb9a6a0454782934192e6362b9a14198, type: 3}
   hand: {fileID: 143021600, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}

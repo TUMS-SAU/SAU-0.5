@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.Android;
 
@@ -16,6 +17,11 @@ public class Weapon : MonoBehaviour
 
     float timer;
     Player player;
+
+    public SpriteRenderer[] weaponRenderers;
+    public float disappearDuration = 1f;
+    public float appearDuration = 5f;
+
 
     void Awake(){
         player = GameManager.instance.player; //게임메니저 활용으로 초기화
@@ -127,10 +133,13 @@ public class Weapon : MonoBehaviour
         //BroadcastMessage : 특정 함수 호출을 모든 자식에게 방송하는 함수
         ///player가 가지고 있는 모든 기어에 한해서 applyGear가 되도록 하는 것
         ///오류를 막기 위해 DontRequireReceiver를 두번째 인자값으로 추가
+        
     }
 
     void Batch() //Batch : 자료를 모아 두었다가 일괄해서 처리하는 자료처리의 형태
     {
+        
+
         for (int index = 0; index < count; index++){ 
             Transform bullet; 
             
@@ -139,11 +148,16 @@ public class Weapon : MonoBehaviour
                 bullet = transform.GetChild(index); 
                     //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
                     //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
+                weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
             }
             else {
                 bullet = GameManager.instance.pool.Get(prefabId).transform;  
                 //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
+                weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
                 bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
+                
+                
+                Debug.Log("Bullet들어감");
             }
                 
             
@@ -157,11 +171,57 @@ public class Weapon : MonoBehaviour
             bullet.Translate(bullet.up * 1.5f, Space.World); //이동 방향은 Space World 기준으로 
             bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
                                                             //-100  is Infinity Per.
-
+           
+            
+            // if (bulletRenderer != null && !weaponRenderers.Contains(bulletRenderer))
+            // {
+            //     weaponRenderers.Add(bulletRenderer);
+            // }
+            
+           StartCoroutine(DisappearAppearCoroutine(weaponRenderers)); // Renderer에 대한 Coroutine 추가
         }
     }
 
+     IEnumerator DisappearAppearCoroutine(SpriteRenderer[] renderers)
+    {
+        float elapsedTime = 0f;
 
+        while (elapsedTime < disappearDuration)
+        {
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / disappearDuration);
+            SetRenderersAlpha(renderers, alpha);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        SetRenderersAlpha(renderers, 0f);
+
+        yield return new WaitForSeconds(appearDuration);
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < appearDuration)
+        {
+            float alpha = Mathf.Lerp(0f, 1f, elapsedTime / appearDuration);
+            SetRenderersAlpha(renderers, alpha);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        SetRenderersAlpha(renderers, 1f);
+    }
+
+    void SetRenderersAlpha(SpriteRenderer[] renderers, float alpha)
+    {
+        foreach (var SpriteRenderer in renderers)
+        {
+            Color color = SpriteRenderer.material.color;
+            color.a = alpha;
+            SpriteRenderer.material.color = color;
+        }
+    }
 
 
     void Fire()
