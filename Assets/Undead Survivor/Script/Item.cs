@@ -41,7 +41,7 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Melee:
             case ItemData.ItemType.Range:
             case ItemData.ItemType.Bomb:
-                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level],data.speedRate[level]*100);
                 //데미지 % 상승을 보여줄 땐 100 곱하기
                 break;
             case ItemData.ItemType.Alco:

@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 5
   itemId: 5
-  itemName: "\uB514\uC800\uD2B8"
+  itemName: "\uCE58\uD0A8"
   itemDesc: "\uC0DD\uBA85\uB825 50 \uD68C\uBCF5"
-  itemIcon: {fileID: 927338625, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
+  itemIcon: {fileID: 21300000, guid: 3f3a1a691d47f5a408213fdb93a650e1, type: 3}
   baseDamage: 0
   baseCount: 0
+  baseSpeed: 0
   damages:
   - 0
   - 0
@@ -26,5 +27,11 @@ MonoBehaviour:
   - 0
   - 0
   counts: 0000000000000000000000000000000000000000
+  speedRate:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   projectile: {fileID: 0}
   hand: {fileID: 0}

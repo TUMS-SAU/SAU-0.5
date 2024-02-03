@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem.Android;
 
 public class Weapon : MonoBehaviour
 {
@@ -28,6 +29,9 @@ public class Weapon : MonoBehaviour
         //무기 id에 따라 로직을 분리할 switch문 작성
         switch (id){
             case 0: //근접무기 : 삽
+                transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
+                break;
+            case 9: //근접무기 : 삽
                 transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
                 break;
             case 7:
@@ -60,7 +64,7 @@ public class Weapon : MonoBehaviour
         this.speed = speed;
 
 
-        if (id == 0)
+        if (id == 0 || id ==9)
             Batch();
 
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver); 
@@ -94,6 +98,11 @@ public class Weapon : MonoBehaviour
         //무기 id에 따라 로직을 분리할 switch문 작성
         switch (id){
             case 0: //근접무기 : 삽
+                speed = 150 * Character.WeaponSpeed;
+                Batch();
+                break;
+            
+            case 9: //근접무기 : 삽
                 speed = 150 * Character.WeaponSpeed;
                 Batch();
                 break;
@@ -141,14 +150,19 @@ public class Weapon : MonoBehaviour
             
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
+            
 
             Vector3 rotVec = Vector3.forward * 360 * index / count;
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f, Space.World); //이동 방향은 Space World 기준으로 
             bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
                                                             //-100  is Infinity Per.
+
         }
     }
+
+
+
 
     void Fire()
     {

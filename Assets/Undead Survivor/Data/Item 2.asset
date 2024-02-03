@@ -16,9 +16,10 @@ MonoBehaviour:
   itemId: 2
   itemName: "\uC220"
   itemDesc: "\uC5F0\uC0AC\uC18D\uB3C4 {0}% \uC99D\uAC00"
-  itemIcon: {fileID: -201829820, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
+  itemIcon: {fileID: 21300000, guid: c728798ac2cf2e94fa6218ae54d9d9ef, type: 3}
   baseDamage: 0
   baseCount: 0
+  baseSpeed: 0
   damages:
   - 0.1
   - 0.2
@@ -26,5 +27,11 @@ MonoBehaviour:
   - 0.5
   - 0.75
   counts: 0000000000000000000000000000000000000000
+  speedRate:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   projectile: {fileID: 0}
   hand: {fileID: 0}
