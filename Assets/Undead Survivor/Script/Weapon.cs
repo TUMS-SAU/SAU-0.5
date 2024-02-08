@@ -16,8 +16,7 @@ public class Weapon : MonoBehaviour
     float timer;
     Player player;
 
-
-
+    float ecobagtimer;
     Coroutine ecobagCoroutine; // Ecobag 활성화를 제어하는 코루틴을 저장하는 변수
     bool isEcobag = false;
 
@@ -38,11 +37,11 @@ public class Weapon : MonoBehaviour
                 transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
                 break;
             case 5:
-                timer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
+                ecobagtimer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
 
-                if (!isEcobag && timer >= 1.35f)
+                if (!isEcobag && ecobagtimer >= 1.35f)
                 {
-                    timer = 0f; //speed 보다 커지면 초기화하면서 발사
+                    ecobagtimer = 0f; //speed 보다 커지면 초기화하면서 발사
                     FireEcobag();
                 }
                 break;
@@ -292,7 +291,7 @@ public class Weapon : MonoBehaviour
         }
 
         isEcobag = false;
-        timer = 0f;
+        ecobagtimer = 0f;
 
         ecobagCoroutine = null; // 코루틴 변수 초기화
     }
