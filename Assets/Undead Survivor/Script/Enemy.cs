@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class Enemy : MonoBehaviour
     public Rigidbody2D target;
 
     bool isLive;
+
 
     Rigidbody2D rigid;
     Collider2D coll;
@@ -52,6 +54,7 @@ public class Enemy : MonoBehaviour
             return;
 
         spriter.flipX = target.position.x < rigid.position.x;
+        
     }
 
     void OnEnable()
@@ -77,12 +80,13 @@ public class Enemy : MonoBehaviour
     //무기와 적이 다았을때 이벤트 시스템
     void OnTriggerEnter2D(Collider2D collision)
     { //collision = 지금 충돌한 상대
-        if (!collision.CompareTag("Bullet") || !isLive) 
+        if (!collision.CompareTag("Bullet") || !isLive  ) 
             //지금 충돌한게 "Bullet"이 맞습니까라고 확인 & 사망 로직이 연달아 실행되는 것을 방지하기 위해 조건 추가
             return;
-        
+
+    
         health -= collision.GetComponent<Bullet>().damage; //맞은 무기의 데미지만큼 체력에서 깎기
-        //코루틴은 StartCoroutine으로 호출
+            //코루틴은 StartCoroutine으로 호출
         StartCoroutine(KnockBack()); //StartCoroutine("KnockBack") 도 가능
 
         if (health > 0) {
@@ -102,7 +106,8 @@ public class Enemy : MonoBehaviour
             if (GameManager.instance.isLive){
                 //효과음을 재생할 부분마다 재생함수 호출
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);}
-        }
+            }
+        
 
         
     }

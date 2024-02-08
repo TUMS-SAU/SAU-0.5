@@ -77,6 +77,10 @@ public class Gear : MonoBehaviour
                     float speed = 150 * Character.WeaponSpeed;
                     weapon.speed = speed + (speed * rate);
                     break;
+                case 9:
+                    float speed2 = 150 * Character.WeaponSpeed;
+                    weapon.speed = speed2 + (speed2 * rate);
+                    break;
                 //원거리 무기
                 default:
                     speed = 0.5f * Character.WeaponRate;

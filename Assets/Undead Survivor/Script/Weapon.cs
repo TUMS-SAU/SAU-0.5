@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.Android;
+using UnityEngine.Rendering.UI;
 
 public class Weapon : MonoBehaviour
 {
@@ -16,13 +18,16 @@ public class Weapon : MonoBehaviour
     public float speed; //회전속도 혹은 연사 속도
 
     float timer;
+    public int per;
     Player player;
 
     //public SpriteRenderer[] weaponRenderers;
-    public float disappearDuration = 1f;
+    public float disappearDuration = 1.5f;
     public float appearDuration = 5f;
 
-
+    Coroutine disappearBullet;
+    
+    bool isDisappear = false;
     void Awake(){
         player = GameManager.instance.player; //게임메니저 활용으로 초기화
     }
@@ -142,18 +147,17 @@ public class Weapon : MonoBehaviour
                     //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
                     //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
                 weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+                bullet.gameObject.SetActive(true);
             }
             else {
                 bullet = GameManager.instance.pool.Get(prefabId).transform;  
                 //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
                 weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
                 bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
-                
-                
-                Debug.Log("Bullet생성");
+                bullet.gameObject.SetActive(true);
             }
                 
-            
+            bullet.gameObject.SetActive(true);
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
             
@@ -170,7 +174,7 @@ public class Weapon : MonoBehaviour
             //     weaponRenderers.Add(bulletRenderer);
             // }
             
-           StartCoroutine(DisappearAppearCoroutine(weaponRenderers)); // Renderer에 대한 Coroutine 추가
+           BatchBullet(weaponRenderers);
         }
     }
 
@@ -179,33 +183,43 @@ public class Weapon : MonoBehaviour
 
         float elapsedTime = 0f;
 
-        while (elapsedTime < disappearDuration)
-        {
-            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / disappearDuration);
-            SetRenderersAlpha(renderers, alpha);
-
-            
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        SetRenderersAlpha(renderers, 0f);
-
+        
+        
         yield return new WaitForSeconds(appearDuration);
 
         elapsedTime = 0f;
+        
 
         while (elapsedTime < appearDuration)
         {
             float alpha = Mathf.Lerp(0f, 1f, elapsedTime / appearDuration);
             SetRenderersAlpha(renderers, alpha);
-
+            for (int i = 0; i<transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         SetRenderersAlpha(renderers, 1f);
+        isDisappear = true;
+        
+        yield return new WaitForSeconds(disappearDuration);
+        
+         while (elapsedTime < disappearDuration)
+        {
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / disappearDuration);
+            SetRenderersAlpha(renderers, alpha);
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        SetRenderersAlpha(renderers, 0f);
+        
+        isDisappear = false;
+        disappearBullet = null;
     }
 
     void SetRenderersAlpha(SpriteRenderer[] renderers, float alpha)
@@ -237,14 +251,13 @@ public class Weapon : MonoBehaviour
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 
-    void Ecobag()
+    
+    void BatchBullet(SpriteRenderer[] renderers)
     {
-        Vector3 direct = transform.position;
-        direct = direct.normalized;
-
-        Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
-        bullet.position = transform.position;
-        
+        if ((id ==0 || id == 9) && !isDisappear)
+        {
+            disappearBullet = StartCoroutine(DisappearAppearCoroutine(renderers));
+        }
     }
 
     
