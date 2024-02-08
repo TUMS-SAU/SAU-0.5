@@ -179,7 +179,7 @@ public class Weapon : MonoBehaviour
                 //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
                 //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
 
-                bullet.gameObject.SetActive(true);
+//                bullet.gameObject.SetActive(true);
 
             }
             else
@@ -314,7 +314,35 @@ public class Weapon : MonoBehaviour
     {
         if (id == 0 && !isFriend)
         {
-            friendCoroutine = StartCoroutine(ActivateFriend()); // Ecobag 활성화 코루틴 시작
+            SpriteRenderer[] friendRenderers = new SpriteRenderer[count];
+
+            for (int index = 0; index < count; index++)
+            {
+                Transform bullet;
+
+                //bullet 초기화
+                if (index < transform.childCount)
+                {//자신의 자식 오브젝트 개수 확인은 childCount속성 
+                    bullet = transform.GetChild(index);
+                    //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
+                    //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
+
+                    friendRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+
+                }
+                else
+                {
+                    bullet = GameManager.instance.pool.Get(prefabId).transform;
+                    //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
+                    //bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
+
+                    //friendRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+
+                }
+
+            }
+
+            friendCoroutine = StartCoroutine(ActivateFriend(friendRenderers)); // Ecobag 활성화 코루틴 시작
         }
     }
 
@@ -334,10 +362,12 @@ public class Weapon : MonoBehaviour
     // Ecobag을 활성화하고 비활성화하는 코루틴
     IEnumerator ActivateEcobag()
     {
+        isEcobag = true;
+
         // Ecobag 생성
         BatchEcobag();
 
-        isEcobag = true;
+        
 
         yield return new WaitForSeconds(1.35f); // Ecobag이 활성화된 후 일정 시간 대기
 
@@ -353,14 +383,74 @@ public class Weapon : MonoBehaviour
         ecobagCoroutine = null; // 코루틴 변수 초기화
     }
 
-    IEnumerator ActivateFriend()
+
+
+    void SetRenderersAlpha(SpriteRenderer[] renderers, float alpha)
     {
-        // Ecobag 생성
-        BatchFriend();
+        foreach(var SpriteRenderer in renderers)
+        {
+            Color color = SpriteRenderer.material.color;
+            color.a = alpha;
+            SpriteRenderer.material.color = color;
+        }
+    }
+
+    IEnumerator ActivateFriend(SpriteRenderer[] renderers)
+    {
+        float elapsedTime = 0f;
+        float duration = 1.35f;
 
         isFriend = true;
 
-        yield return new WaitForSeconds(1.35f); // Ecobag이 활성화된 후 일정 시간 대기
+
+        // Friend 생성
+        BatchFriend();
+
+        for (int index = 0; index < count; index++)
+        {
+            transform.GetChild(index).gameObject.SetActive(true);
+        }
+
+        // 나타나는 애니메이션
+        while (elapsedTime <= duration)
+        {
+            float alpha = Mathf.Lerp(0f, 1f, elapsedTime / duration);
+            SetRenderersAlpha(renderers, alpha);
+
+            elapsedTime += Time.deltaTime;
+
+            // 다음 프레임까지 대기
+            yield return null;
+        }
+
+        // 전부 완전히 나타나게 하기
+        SetRenderersAlpha(renderers, 1f);
+
+        //isFriend = true;
+
+
+        // 일정 시간 대기
+        yield return new WaitForSeconds(duration); // Ecobag이 활성화된 후 일정 시간 대기
+
+
+        // 사라지는 애니메이션
+        elapsedTime = 0f;
+
+        while (elapsedTime <= duration)
+        {
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / duration);
+            SetRenderersAlpha(renderers, alpha);
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+
+        }
+
+        // 전부 완전히 사라지게 하기
+        SetRenderersAlpha(renderers, 0f);
+
+        elapsedTime = 0;
 
         // Ecobag 생성되었던 무기들 제거
         for (int i = 0; i < transform.childCount; i++)
@@ -368,6 +458,7 @@ public class Weapon : MonoBehaviour
             transform.GetChild(i).gameObject.SetActive(false);
         }
 
+        // 변수 초기화
         isFriend = false;
         friendtimer = 0f;
 
