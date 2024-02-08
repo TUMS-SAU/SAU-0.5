@@ -403,7 +403,7 @@ public class Weapon : MonoBehaviour
         isFriend = true;
 
 
-        // Friend 생성
+        // Friend 위치를 정한다
         BatchFriend();
 
         for (int index = 0; index < count; index++)
@@ -426,7 +426,6 @@ public class Weapon : MonoBehaviour
         // 전부 완전히 나타나게 하기
         SetRenderersAlpha(renderers, 1f);
 
-        //isFriend = true;
 
 
         // 일정 시간 대기
@@ -450,7 +449,7 @@ public class Weapon : MonoBehaviour
         // 전부 완전히 사라지게 하기
         SetRenderersAlpha(renderers, 0f);
 
-        elapsedTime = 0;
+        elapsedTime = 0f;
 
         // Ecobag 생성되었던 무기들 제거
         for (int i = 0; i < transform.childCount; i++)
