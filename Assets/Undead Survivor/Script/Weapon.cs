@@ -191,6 +191,8 @@ public class Weapon : MonoBehaviour
             float alpha = Mathf.Lerp(1f, 0f, elapsedTime / disappearDuration);
             SetRenderersAlpha(renderers, alpha);
 
+            
+
             elapsedTime += Time.deltaTime;
             yield return null;
         }
