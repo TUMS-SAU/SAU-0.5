@@ -25,9 +25,10 @@ public class Weapon : MonoBehaviour
     public float disappearDuration = 1.5f;
     public float appearDuration = 5f;
 
-    Coroutine disappearBullet;
+    Coroutine friendCouroutine;
     
-    bool isDisappear = false;
+    //bool isDisappear = false;
+    bool isFriend = false;
     void Awake(){
         player = GameManager.instance.player; //게임메니저 활용으로 초기화
     }
@@ -43,6 +44,15 @@ public class Weapon : MonoBehaviour
                 transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
                 break;
             case 9: //근접무기 : 수호친구
+
+                timer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
+
+                if (!isFriend && timer >= 1.35f)
+                {
+                    timer = 0f; //speed 보다 커지면 초기화하면서 발사
+                    FireFriend();
+                }
+
                 transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
                 break;
             case 7:
@@ -68,8 +78,16 @@ public class Weapon : MonoBehaviour
         this.speed = speed;
 
 
-        if (id == 0 || id ==9)
+        //if (id == 0 || id ==9)
+        //    Batch();
+        if(id == 0)
+        {
             Batch();
+        }
+        if(id == 9)
+        {
+            BatchFriend();
+        }
 
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver); 
         Debug.Log("ApplyGear"); 
@@ -103,12 +121,14 @@ public class Weapon : MonoBehaviour
         switch (id){
             case 0: //근접무기 : 삽
                 speed = 150 * Character.WeaponSpeed;
+                //Batch();
                 Batch();
                 break;
             
             case 9: //근접무기 : 수호친구
                 speed = 150 * Character.WeaponSpeed;
-                Batch();
+                //Batch();
+                BatchFriend();
                 break;
             
             case 7: //원거리 무기 : 폭탄
@@ -134,93 +154,165 @@ public class Weapon : MonoBehaviour
         
     }
 
-    void Batch() //Batch : 자료를 모아 두었다가 일괄해서 처리하는 자료처리의 형태
+    //void Batch() //Batch : 자료를 모아 두었다가 일괄해서 처리하는 자료처리의 형태
+    //{
+
+    //    SpriteRenderer[] weaponRenderers = new SpriteRenderer[count];
+    //    for (int index = 0; index < count; index++){ 
+    //        Transform bullet; 
+
+    //        //bullet 초기화
+    //        if (index < transform.childCount) {//자신의 자식 오브젝트 개수 확인은 childCount속성 
+    //            bullet = transform.GetChild(index); 
+    //                //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
+    //                //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
+    //            weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+    //            bullet.gameObject.SetActive(true);
+    //        }
+    //        else {
+    //            bullet = GameManager.instance.pool.Get(prefabId).transform;  
+    //            //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
+    //            weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+    //            bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
+    //            bullet.gameObject.SetActive(true);
+    //        }
+
+    //        bullet.gameObject.SetActive(true);
+    //        bullet.localPosition = Vector3.zero;
+    //        bullet.localRotation = Quaternion.identity;
+
+
+    //        Vector3 rotVec = Vector3.forward * 360 * index / count;
+    //        bullet.Rotate(rotVec);
+    //        bullet.Translate(bullet.up * 1.5f, Space.World); //이동 방향은 Space World 기준으로 
+    //        bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
+    //                                                        //-100  is Infinity Per.
+
+
+    //        // if (bulletRenderer != null && !weaponRenderers.Contains(bulletRenderer))
+    //        // {
+    //        //     weaponRenderers.Add(bulletRenderer);
+    //        // }
+
+    //       BatchBullet(weaponRenderers);
+    //    }
+    //}
+
+    void Batch()
     {
-        
-        SpriteRenderer[] weaponRenderers = new SpriteRenderer[count];
-        for (int index = 0; index < count; index++){ 
-            Transform bullet; 
-            
+        for (int index = 0; index < count; index++)
+        {
+            Transform bullet;
+
             //bullet 초기화
-            if (index < transform.childCount) {//자신의 자식 오브젝트 개수 확인은 childCount속성 
-                bullet = transform.GetChild(index); 
-                    //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
-                    //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
-                weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
-                bullet.gameObject.SetActive(true);
+            if (index < transform.childCount)
+            {//자신의 자식 오브젝트 개수 확인은 childCount속성 
+                bullet = transform.GetChild(index);
+                //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
+                //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
             }
-            else {
-                bullet = GameManager.instance.pool.Get(prefabId).transform;  
+            else
+            {
+                bullet = GameManager.instance.pool.Get(prefabId).transform;
                 //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
-                weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
                 bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
-                bullet.gameObject.SetActive(true);
             }
-                
-            bullet.gameObject.SetActive(true);
+
+
+
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
-            
 
             Vector3 rotVec = Vector3.forward * 360 * index / count;
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f, Space.World); //이동 방향은 Space World 기준으로 
             bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
-                                                            //-100  is Infinity Per.
-           
-            
-            // if (bulletRenderer != null && !weaponRenderers.Contains(bulletRenderer))
-            // {
-            //     weaponRenderers.Add(bulletRenderer);
-            // }
-            
-           BatchBullet(weaponRenderers);
+                                                                            //-100  is Infinity Per.
         }
     }
 
-     IEnumerator DisappearAppearCoroutine(SpriteRenderer[] renderers)
+    void BatchFriend()
     {
+        //SpriteRenderer[] weaponRenderers = new SpriteRenderer[count];
 
-        float elapsedTime = 0f;
-
-        
-        
-        yield return new WaitForSeconds(appearDuration);
-
-        elapsedTime = 0f;
-        
-
-        while (elapsedTime < appearDuration)
+        for (int index = 0; index < count; index++)
         {
-            float alpha = Mathf.Lerp(0f, 1f, elapsedTime / appearDuration);
-            SetRenderersAlpha(renderers, alpha);
-            for (int i = 0; i<transform.childCount; i++)
-            {
-                transform.GetChild(i).gameObject.SetActive(false);
+            Transform bullet;
+
+            //bullet 초기화
+            if (index < transform.childCount)
+            {//자신의 자식 오브젝트 개수 확인은 childCount속성 
+                bullet = transform.GetChild(index);
+                //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
+                //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
+                bullet.gameObject.SetActive(true);
+                //weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
             }
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            else
+            {
+                bullet = GameManager.instance.pool.Get(prefabId).transform;
+                //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
+                bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
+                //weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+            }
+
+
+
+            bullet.localPosition = Vector3.zero;
+            bullet.localRotation = Quaternion.identity;
+
+            Vector3 rotVec = Vector3.forward * 360 * index / count;
+            bullet.Rotate(rotVec);
+            bullet.Translate(bullet.up * 1.5f, Space.World); //이동 방향은 Space World 기준으로 
+            bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
+                                                                            //-100  is Infinity Per.
         }
-
-        SetRenderersAlpha(renderers, 1f);
-        isDisappear = true;
-        
-        yield return new WaitForSeconds(disappearDuration);
-        
-         while (elapsedTime < disappearDuration)
-        {
-            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / disappearDuration);
-            SetRenderersAlpha(renderers, alpha);
-            elapsedTime += Time.deltaTime;
-
-            yield return null;
-        }
-
-        SetRenderersAlpha(renderers, 0f);
-        
-        isDisappear = false;
-        disappearBullet = null;
     }
+
+
+    // IEnumerator DisappearAppearCoroutine(SpriteRenderer[] renderers)
+    //{
+
+    //    float elapsedTime = 0f;
+
+        
+        
+    //    yield return new WaitForSeconds(appearDuration);
+
+    //    elapsedTime = 0f;
+        
+
+    //    while (elapsedTime < appearDuration)
+    //    {
+    //        float alpha = Mathf.Lerp(0f, 1f, elapsedTime / appearDuration);
+    //        SetRenderersAlpha(renderers, alpha);
+    //        for (int i = 0; i<transform.childCount; i++)
+    //        {
+    //            transform.GetChild(i).gameObject.SetActive(false);
+    //        }
+    //        elapsedTime += Time.deltaTime;
+    //        yield return null;
+    //    }
+
+    //    SetRenderersAlpha(renderers, 1f);
+    //    isDisappear = true;
+        
+    //    yield return new WaitForSeconds(disappearDuration);
+        
+    //     while (elapsedTime < disappearDuration)
+    //    {
+    //        float alpha = Mathf.Lerp(1f, 0f, elapsedTime / disappearDuration);
+    //        SetRenderersAlpha(renderers, alpha);
+    //        elapsedTime += Time.deltaTime;
+
+    //        yield return null;
+    //    }
+
+    //    SetRenderersAlpha(renderers, 0f);
+        
+    //    isDisappear = false;
+    //    disappearBullet = null;
+    //}
 
     void SetRenderersAlpha(SpriteRenderer[] renderers, float alpha)
     {
@@ -251,14 +343,82 @@ public class Weapon : MonoBehaviour
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 
-    
-    void BatchBullet(SpriteRenderer[] renderers)
+
+
+    void FireFriend()
     {
-        if ((id ==0 || id == 9) && !isDisappear)
+        Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
+
+        // Ecobag이 활성화되어있지 않고, id가 5인 경우에만 Ecobag 생성
+        if (id == 9 && !isFriend)
         {
-            disappearBullet = StartCoroutine(DisappearAppearCoroutine(renderers));
+            SpriteRenderer[] weaponRenderers = new SpriteRenderer[count];
+
+            for (int index = 0; index < count; index++)
+            {
+                //bullet 초기화
+                if (index < transform.childCount)
+                {//자신의 자식 오브젝트 개수 확인은 childCount속성 
+                    weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+                }
+                else
+                {
+                    weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+                }
+
+            }
+
+            friendCouroutine = StartCoroutine(ActivateFriend(weaponRenderers)); // Ecobag 활성화 코루틴 시작
         }
     }
+
+    // Ecobag을 활성화하고 비활성화하는 코루틴
+    IEnumerator ActivateFriend(SpriteRenderer[] renderers)
+    {
+        //float elapsedTime;
+
+        // Ecobag 생성
+        BatchFriend();
+        isFriend = true;
+
+        // Ecobag이 활성화된 후 일정 시간 대기
+        yield return new WaitForSeconds(appearDuration);
+
+        //elapsedTime = 0f;
+
+
+
+        while (timer < appearDuration)
+        {
+            float alpha = Mathf.Lerp(0f, 1f, timer / appearDuration);
+            SetRenderersAlpha(renderers, alpha);
+            // Ecobag 생성되었던 무기들 제거
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+            //elapsedTime += Time.deltaTime;
+            //yield return null;
+        }
+
+        SetRenderersAlpha(renderers, 0f);
+        isFriend = false;
+        timer = 0f;
+
+        friendCouroutine = null; // 코루틴 변수 초기화
+    }
+
+
+
+
+
+    //void BatchBullet(SpriteRenderer[] renderers)
+    //{
+    //    if ((id ==0 || id == 9) && !isDisappear)
+    //    {
+    //        disappearBullet = StartCoroutine(DisappearAppearCoroutine(renderers));
+    //    }
+    //}
 
     
 }
