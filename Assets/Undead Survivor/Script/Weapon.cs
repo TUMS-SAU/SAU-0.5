@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem.Android;
+using UnityEngine.Rendering.UI;
 
 public class Weapon : MonoBehaviour
 {
@@ -16,13 +19,16 @@ public class Weapon : MonoBehaviour
     public float speed; //회전속도 혹은 연사 속도
 
     float timer;
+    public int per;
     Player player;
 
     //public SpriteRenderer[] weaponRenderers;
-    public float disappearDuration = 1f;
+    public float disappearDuration = 1.5f;
     public float appearDuration = 5f;
 
+    public bool isDisappear;
 
+    
     void Awake(){
         player = GameManager.instance.player; //게임메니저 활용으로 초기화
     }
@@ -38,7 +44,8 @@ public class Weapon : MonoBehaviour
                 transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
                 break;
             case 9: //근접무기 : 수호친구
-                transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
+                transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기 
+                Batch();
                 break;
             case 7:
                 timer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
@@ -103,7 +110,6 @@ public class Weapon : MonoBehaviour
             
             case 9: //근접무기 : 수호친구
                 speed = 150 * Character.WeaponSpeed;
-                Batch();
                 break;
             
             case 7: //원거리 무기 : 폭탄
@@ -142,6 +148,7 @@ public class Weapon : MonoBehaviour
                     //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
                     //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
                 weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+                
             }
             else {
                 bullet = GameManager.instance.pool.Get(prefabId).transform;  
@@ -149,8 +156,6 @@ public class Weapon : MonoBehaviour
                 weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
                 bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
                 
-                
-                Debug.Log("Bullet생성");
             }
                 
             
@@ -170,7 +175,8 @@ public class Weapon : MonoBehaviour
             //     weaponRenderers.Add(bulletRenderer);
             // }
             
-           StartCoroutine(DisappearAppearCoroutine(weaponRenderers)); // Renderer에 대한 Coroutine 추가
+            StartCoroutine(DisappearAppearCoroutine(weaponRenderers));
+        
         }
     }
 
@@ -179,33 +185,36 @@ public class Weapon : MonoBehaviour
 
         float elapsedTime = 0f;
 
-        while (elapsedTime < disappearDuration)
-        {
-            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / disappearDuration);
-            SetRenderersAlpha(renderers, alpha);
-
-            
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        SetRenderersAlpha(renderers, 0f);
-
+        while(true){
         yield return new WaitForSeconds(appearDuration);
 
         elapsedTime = 0f;
+        
 
         while (elapsedTime < appearDuration)
         {
             float alpha = Mathf.Lerp(0f, 1f, elapsedTime / appearDuration);
             SetRenderersAlpha(renderers, alpha);
-
+            
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         SetRenderersAlpha(renderers, 1f);
+        yield return new WaitForSeconds(disappearDuration);
+        
+         while (elapsedTime < disappearDuration)
+        {
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / disappearDuration);
+            SetRenderersAlpha(renderers, alpha);
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        SetRenderersAlpha(renderers, 0f);
+        }
+        
     }
 
     void SetRenderersAlpha(SpriteRenderer[] renderers, float alpha)
@@ -215,8 +224,19 @@ public class Weapon : MonoBehaviour
             Color color = SpriteRenderer.material.color;
             color.a = alpha;
             SpriteRenderer.material.color = color;
+
+            if (color.a == 0)
+            {
+                isDisappear = true;
+            }
+            else
+            {
+                isDisappear = false;
+            }
         }
+        
     }
+
 
 
     void Fire()
@@ -237,15 +257,6 @@ public class Weapon : MonoBehaviour
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 
-    void Ecobag()
-    {
-        Vector3 direct = transform.position;
-        direct = direct.normalized;
-
-        Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
-        bullet.position = transform.position;
-        
-    }
-
+    
     
 }
