@@ -19,8 +19,6 @@ public class Enemy : MonoBehaviour
     SpriteRenderer spriter;
     WaitForFixedUpdate wait; //다음 fixedUpdate가 될때까지 기다리는 변수
 
-    Weapon weaponScript;
-    bool isDisappearValue;
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -28,16 +26,9 @@ public class Enemy : MonoBehaviour
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         wait = new WaitForFixedUpdate();
-        weaponScript = GetComponentInChildren<Weapon>();
+    
     }
 
-    void Update()
-    {
-        isDisappearValue = weaponScript.isDisappear;
-        if (isDisappearValue){
-            Debug.Log(isDisappearValue);
-        }
-    }
     void FixedUpdate()
     {
         if(!GameManager.instance.isLive)
@@ -87,7 +78,7 @@ public class Enemy : MonoBehaviour
     //무기와 적이 다았을때 이벤트 시스템
     void OnTriggerEnter2D(Collider2D collision)
     { //collision = 지금 충돌한 상대
-        if (!collision.CompareTag("Bullet") || !isLive || isDisappearValue) 
+        if (!collision.CompareTag("Bullet") || !isLive) 
             //지금 충돌한게 "Bullet"이 맞습니까라고 확인 & 사망 로직이 연달아 실행되는 것을 방지하기 위해 조건 추가
             return;
         
