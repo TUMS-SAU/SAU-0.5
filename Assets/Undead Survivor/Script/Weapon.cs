@@ -37,7 +37,7 @@ public class Weapon : MonoBehaviour
             case 0: //근접무기 : 삽
                 transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
                 break;
-            case 9: //근접무기 : 삽
+            case 9: //근접무기 : 수호친구
                 transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
                 break;
             case 7:
@@ -48,14 +48,7 @@ public class Weapon : MonoBehaviour
                     Fire();
                 }
                 break;
-            default:
-                timer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
-
-                if (timer > speed) {
-                    timer = 0f; //speed 보다 커지면 초기화하면서 발사
-                    Bomb();
-                }
-                break;
+            
         }
 
         //TestCode
@@ -108,7 +101,7 @@ public class Weapon : MonoBehaviour
                 Batch();
                 break;
             
-            case 9: //근접무기 : 삽
+            case 9: //근접무기 : 수호친구
                 speed = 150 * Character.WeaponSpeed;
                 Batch();
                 break;
@@ -244,21 +237,15 @@ public class Weapon : MonoBehaviour
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 
-    void Bomb()
+    void Ecobag()
     {
-        if (!player.scanner.nearestTarget)
-            return;
-        
-        Vector3 targetPos = player.scanner.nearestTarget.position;
-        Vector3 dir = targetPos - transform.position; //크기가 포함된 방향 : 목표 위치 - 나의 위치
-        dir = dir.normalized; //normalized : 현재 벡터의 방향은 유지하고 크기를 1로 변환하는 속성
+        Vector3 direct = transform.position;
+        direct = direct.normalized;
 
         Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
-        bullet.position = transform.position; //플레이어 위치에서 쏘는 것으로 고정
-        bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir); //FromToRotation : 지정된 축을 중심으로 목표를 향해 회전하는 함수
-        bullet.GetComponent<Bullet>().Init(damage, count, dir); //원거리 함수에 맞게 초기화 함수 호출하기
-
-        //효과음을 재생할 부분마다 재생함수 호출
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
+        bullet.position = transform.position;
+        
     }
+
+    
 }
