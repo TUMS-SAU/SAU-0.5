@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     
     public float speed; //속도 관리 변수
     public Scanner scanner; //플레이어 스크립트에서 검색 클래스 타입 변수 선언 및 초기화
-    public Hand[] hands;
+    //public Hand[] hands;
     public RuntimeAnimatorController[] animCon; //여러 애니메이터 컨트롤러를 저장할 배열 변수 
 
     Rigidbody2D rigid;
@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
-        hands = GetComponentsInChildren<Hand>(true); //인자값에 true를 넣으면 비활성화된 오브젝트도 인식한다. 
+        //hands = GetComponentsInChildren<Hand>(true); //인자값에 true를 넣으면 비활성화된 오브젝트도 인식한다. 
     }
 
     void OnEnable()

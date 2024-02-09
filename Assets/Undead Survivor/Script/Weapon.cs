@@ -16,6 +16,16 @@ public class Weapon : MonoBehaviour
     float timer;
     Player player;
 
+    float ecobagtimer;
+    Coroutine ecobagCoroutine; // Ecobag 활성화를 제어하는 코루틴을 저장하는 변수
+    bool isEcobag = false;
+
+    float friendtimer;
+    Coroutine friendCoroutine; // Ecobag 활성화를 제어하는 코루틴을 저장하는 변수
+    bool isFriend = false;
+
+
+
     void Awake(){
         player = GameManager.instance.player; //게임메니저 활용으로 초기화
     }
@@ -29,6 +39,24 @@ public class Weapon : MonoBehaviour
         switch (id){
             case 0: //근접무기 : 삽
                 transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
+
+                friendtimer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
+
+                if (!isFriend && friendtimer >= 1.35f)
+                {
+                    friendtimer = 0f; //speed 보다 커지면 초기화하면서 발사
+                    FireFriend();
+                }
+
+                break;
+            case 5:
+                ecobagtimer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
+
+                if (!isEcobag && ecobagtimer >= 1.35f)
+                {
+                    ecobagtimer = 0f; //speed 보다 커지면 초기화하면서 발사
+                    FireEcobag();
+                }
                 break;
             default:
                 timer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
@@ -40,9 +68,6 @@ public class Weapon : MonoBehaviour
                 break;
         }
 
-        //TestCode
-        if (Input.GetButtonDown("Jump")) 
-            LevelUp(10, 1);
     }
 
     public void LevelUp(float damage,int count)
@@ -51,7 +76,11 @@ public class Weapon : MonoBehaviour
         this.count += count;
 
         if (id == 0)
-            Batch();
+            BatchFriend();
+        if (id == 5)
+        {
+            BatchEcobag();
+        }
 
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver); 
         //아이템을 누를 때 데미지 카운트가 적용되므로, 기어 데미지가 초기화 될 수 있기 때문에 적용
@@ -84,18 +113,21 @@ public class Weapon : MonoBehaviour
         switch (id){
             case 0: //근접무기 : 삽
                 speed = 150 * Character.WeaponSpeed;
-                Batch();
+                BatchFriend();
                 break;
-            
+            case 5:
+                //speed = 0.5f * Character.WeaponRate;
+                BatchEcobag();
+                break;
             default: //원거리 무기 : 총
                 speed = 0.5f * Character.WeaponRate;
                 break;
         }
-        //Head Set
-        Hand hand = player.hands[(int)data.itemType]; //enum의 데이터는 정수 형태로도 사용 가능
-                                                    //enum 값 앞에 int 타입을 작성하여 강제 형 변환
-        hand.spriter.sprite = data.hand;
-        hand.gameObject.SetActive(true);
+        ////Head Set
+        //Hand hand = player.hands[(int)data.itemType]; //enum의 데이터는 정수 형태로도 사용 가능
+        //                                            //enum 값 앞에 int 타입을 작성하여 강제 형 변환
+        //hand.spriter.sprite = data.hand;
+        //hand.gameObject.SetActive(true);
 
 
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver); 
@@ -104,25 +136,61 @@ public class Weapon : MonoBehaviour
         ///오류를 막기 위해 DontRequireReceiver를 두번째 인자값으로 추가
     }
 
-    void Batch() //Batch : 자료를 모아 두었다가 일괄해서 처리하는 자료처리의 형태
+    //void Batch() //Batch : 자료를 모아 두었다가 일괄해서 처리하는 자료처리의 형태
+    //{
+    //    for (int index = 0; index < count; index++){ 
+    //        Transform bullet; 
+
+    //        //bullet 초기화
+    //        if (index < transform.childCount) {//자신의 자식 오브젝트 개수 확인은 childCount속성 
+    //            bullet = transform.GetChild(index); 
+    //                //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
+    //                //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
+    //        }
+    //        else {
+    //            bullet = GameManager.instance.pool.Get(prefabId).transform;  
+    //            //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
+    //            bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
+    //        }
+
+
+
+    //        bullet.localPosition = Vector3.zero;
+    //        bullet.localRotation = Quaternion.identity;
+
+    //        Vector3 rotVec = Vector3.forward * 360 * index / count;
+    //        bullet.Rotate(rotVec);
+    //        bullet.Translate(bullet.up * 1.5f, Space.World); //이동 방향은 Space World 기준으로 
+    //        bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
+    //                                                        //-100  is Infinity Per.
+    //    }
+    //}
+
+    void BatchFriend() //Batch : 자료를 모아 두었다가 일괄해서 처리하는 자료처리의 형태
     {
-        for (int index = 0; index < count; index++){ 
-            Transform bullet; 
-            
+        for (int index = 0; index < count; index++)
+        {
+            Transform bullet;
+
             //bullet 초기화
-            if (index < transform.childCount) {//자신의 자식 오브젝트 개수 확인은 childCount속성 
-                bullet = transform.GetChild(index); 
-                    //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
-                    //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
+            if (index < transform.childCount)
+            {//자신의 자식 오브젝트 개수 확인은 childCount속성 
+                bullet = transform.GetChild(index);
+                //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
+                //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
+
+//                bullet.gameObject.SetActive(true);
+
             }
-            else {
-                bullet = GameManager.instance.pool.Get(prefabId).transform;  
+            else
+            {
+                bullet = GameManager.instance.pool.Get(prefabId).transform;
                 //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
                 bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
             }
-                
-            
-            
+
+
+
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
 
@@ -130,9 +198,99 @@ public class Weapon : MonoBehaviour
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f, Space.World); //이동 방향은 Space World 기준으로 
             bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
-                                                            //-100  is Infinity Per.
+                                                                            //-100  is Infinity Per.
         }
     }
+
+
+
+    void BatchEcobag()
+    {
+                
+        for (int index = 0; index < count; index++)
+        {
+            Transform bullet;
+
+            if (count == 1)
+            {
+                //bullet 초기화
+                if (index < transform.childCount)
+                {//자신의 자식 오브젝트 개수 확인은 childCount속성
+                 //
+                    //transform.GetChild(index).gameObject.SetActive(true);
+
+
+                    bullet = transform.GetChild(index);
+
+                    bullet.gameObject.SetActive(true);
+
+                    //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
+                    //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
+                }
+                else
+                {
+                    bullet = GameManager.instance.pool.Get(prefabId).transform;
+                    //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
+                    bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
+                }
+
+                //Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
+                //// 무기가 캐릭터 따라다님
+                //bullet.parent = transform;
+
+                bullet.localPosition = Vector3.zero;
+                bullet.localRotation = Quaternion.identity;
+
+                bullet.Translate(new Vector3(1, 0, 0), Space.World); //이동 방향은 Space World 기준으로
+                bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
+            }
+            else
+            {
+                //bullet 초기화
+                if (index < transform.childCount)
+                {//자신의 자식 오브젝트 개수 확인은 childCount속성 
+
+                    //transform.GetChild(index).gameObject.SetActive(true);
+
+
+                    //bullet = transform.GetChild(index);
+                    bullet = transform.GetChild(index);
+
+
+                    bullet.gameObject.SetActive(true);
+                    //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
+                    //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
+                }
+                else
+                {
+                    bullet = GameManager.instance.pool.Get(prefabId).transform;
+                    //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
+                    bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
+                }
+
+                //Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
+                //// 무기가 캐릭터 따라다님
+                //bullet.parent = transform;
+
+                bullet.localPosition = Vector3.zero;
+                bullet.localRotation = Quaternion.identity;
+
+                if (index == 0)
+                {
+                    bullet.Translate(new Vector3(1, 0, 0), Space.World); //이동 방향은 Space World 기준으로 
+                }
+                else
+                {
+                    bullet.Translate(new Vector3(-1, 0, 0), Space.World); //이동 방향은 Space World 기준으로 
+                }
+                bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
+            }
+
+        }
+
+    }
+
+
 
     void Fire()
     {
@@ -149,6 +307,161 @@ public class Weapon : MonoBehaviour
         bullet.GetComponent<Bullet>().Init(damage, count, dir); //원거리 함수에 맞게 초기화 함수 호출하기
 
         //효과음을 재생할 부분마다 재생함수 호출
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);            
     }
+
+    void FireFriend()
+    {
+        if (id == 0 && !isFriend)
+        {
+            SpriteRenderer[] friendRenderers = new SpriteRenderer[count];
+
+            for (int index = 0; index < count; index++)
+            {
+                Transform bullet;
+
+                //bullet 초기화
+                if (index < transform.childCount)
+                {//자신의 자식 오브젝트 개수 확인은 childCount속성 
+                    bullet = transform.GetChild(index);
+                    //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
+                    //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
+
+                    friendRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+
+                }
+                else
+                {
+                    bullet = GameManager.instance.pool.Get(prefabId).transform;
+                    //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
+                    //bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
+
+                    //friendRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+
+                }
+
+            }
+
+            friendCoroutine = StartCoroutine(ActivateFriend(friendRenderers)); // Ecobag 활성화 코루틴 시작
+        }
+    }
+
+
+
+    void FireEcobag()
+    {
+        // Ecobag이 활성화되어있지 않고, id가 5인 경우에만 Ecobag 생성
+        if (id == 5 && !isEcobag)
+        {
+            ecobagCoroutine = StartCoroutine(ActivateEcobag()); // Ecobag 활성화 코루틴 시작
+        }
+    }
+
+
+
+    // Ecobag을 활성화하고 비활성화하는 코루틴
+    IEnumerator ActivateEcobag()
+    {
+        isEcobag = true;
+
+        // Ecobag 생성
+        BatchEcobag();
+
+        
+
+        yield return new WaitForSeconds(1.35f); // Ecobag이 활성화된 후 일정 시간 대기
+
+        // Ecobag 생성되었던 무기들 제거
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+        isEcobag = false;
+        ecobagtimer = 0f;
+
+        ecobagCoroutine = null; // 코루틴 변수 초기화
+    }
+
+
+
+    void SetRenderersAlpha(SpriteRenderer[] renderers, float alpha)
+    {
+        foreach(var SpriteRenderer in renderers)
+        {
+            Color color = SpriteRenderer.material.color;
+            color.a = alpha;
+            SpriteRenderer.material.color = color;
+        }
+    }
+
+    IEnumerator ActivateFriend(SpriteRenderer[] renderers)
+    {
+        float elapsedTime = 0f;
+        float duration = 1.35f;
+
+        isFriend = true;
+
+
+        // Friend 위치를 정한다
+        BatchFriend();
+
+        for (int index = 0; index < count; index++)
+        {
+            transform.GetChild(index).gameObject.SetActive(true);
+        }
+
+        // 나타나는 애니메이션
+        while (elapsedTime <= duration)
+        {
+            float alpha = Mathf.Lerp(0f, 1f, elapsedTime / duration);
+            SetRenderersAlpha(renderers, alpha);
+
+            elapsedTime += Time.deltaTime;
+
+            // 다음 프레임까지 대기
+            yield return null;
+        }
+
+        // 전부 완전히 나타나게 하기
+        SetRenderersAlpha(renderers, 1f);
+
+
+
+        // 일정 시간 대기
+        yield return new WaitForSeconds(duration); // Ecobag이 활성화된 후 일정 시간 대기
+
+
+        // 사라지는 애니메이션
+        elapsedTime = 0f;
+
+        while (elapsedTime <= duration)
+        {
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / duration);
+            SetRenderersAlpha(renderers, alpha);
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+
+        }
+
+        // 전부 완전히 사라지게 하기
+        SetRenderersAlpha(renderers, 0f);
+
+        elapsedTime = 0f;
+
+        // Ecobag 생성되었던 무기들 제거
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+        // 변수 초기화
+        isFriend = false;
+        friendtimer = 0f;
+
+        friendCoroutine = null; // 코루틴 변수 초기화
+    }
+
 }
