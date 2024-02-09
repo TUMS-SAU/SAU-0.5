@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public int playerId;
     public float health;
     public float maxHealth = 100;
+    public float healthStand = 100;
     public int level;   
     public int kill;
     public int exp;
@@ -53,7 +54,8 @@ public class GameManager : MonoBehaviour
     {
         playerId = id;
         
-        health = maxHealth;
+        health = healthStand;
+        maxHealth = healthStand;
 
         //플레이어 활성화
         player.gameObject.SetActive(true);
