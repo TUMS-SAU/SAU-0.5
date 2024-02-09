@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ public class Gear : MonoBehaviour
         rate = data.damages[0];
         //처음에 장비가 새롭게 추가될 때 로직 적용 함수를 호출
         ApplyGear(); 
+        ApplyGearHealth();
     }
 
     public void LevelUp(float rate)
@@ -29,19 +31,36 @@ public class Gear : MonoBehaviour
         this.rate = rate;
         //레벨업 할 때 로직적용 함수를 호출
         ApplyGear();
+        ApplyGearHealth();
     }
 
     //타입에 따라 적절하게 로직을 적용시켜주는 함수 추가
     void ApplyGear()
     {
         switch(type) {
-            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Alco:
                 //장갑은 무기 속도를 올림
                 RateUp();
                 break;
             case ItemData.ItemType.Shoe:
                 //신발은 플레이어의 이동속도를 올림
                 SpeedUp();
+                break;
+            case ItemData.ItemType.Coffee:
+                //아.아는 무기의 데미지를 올림
+                DamageUp();
+                break;
+            
+        }
+    }
+
+    void ApplyGearHealth()
+    {
+        switch(type){
+            case ItemData.ItemType.Gym:
+                //아령은 최대 체력을 올림
+                MaxhealthUp();
+                Debug.Log("ApplyGearForGym");
                 break;
         }
     }
@@ -72,5 +91,26 @@ public class Gear : MonoBehaviour
         float speed = 3 * Character.Speed;
         GameManager.instance.player.speed = speed + speed * rate;
 
+    }
+
+    void MaxhealthUp()
+    {
+        float maxHealth = GameManager.instance.maxHealth;
+        GameManager.instance.maxHealth = maxHealth + maxHealth * rate;
+    }
+
+    void DamageUp()
+    {
+        //플레이어로 올라가서 모든 weapon을 가져오기
+        Weapon[] weapons = transform.parent.GetComponentsInChildren<Weapon>();
+
+        foreach(Weapon weapon in weapons){
+            switch(weapon.id){
+                default:
+                    float damage = weapon.damage;
+                    weapon.damage = damage + damage * rate;
+                    break;
+            }
+        }
     }
 }
