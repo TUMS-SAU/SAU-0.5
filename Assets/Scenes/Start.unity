@@ -131,7 +131,6 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-
   - component: {fileID: 46615770}
   - component: {fileID: 46615772}
   - component: {fileID: 46615771}
@@ -216,7 +215,6 @@ GameObject:
   - component: {fileID: 59595073}
   - component: {fileID: 59595072}
   - component: {fileID: 59595071}
-
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -224,7 +222,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
-
 --- !u!114 &59595071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,25 +256,20 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
 --- !u!81 &59595072
-
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-
   m_GameObject: {fileID: 59595070}
   m_Enabled: 1
 --- !u!20 &59595073
-
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-
   m_GameObject: {fileID: 59595070}
-
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1

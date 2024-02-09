@@ -42,16 +42,10 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Range:
             case ItemData.ItemType.Ecobag:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
+                //데미지 % 상승을 보여줄 땐 100 곱하기
                 break;
-
-            case ItemData.ItemType.Bomb:
-                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level],data.speedRate[level]*100);
-    //데미지 % 상승을 보여줄 땐 100 곱하기
-                break;
-            case ItemData.ItemType.Alco:
+            case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
-            case ItemData.ItemType.Gym:
-            case ItemData.ItemType.Coffee:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level]);
                 break;
             case ItemData.ItemType.Pencil:
@@ -94,36 +88,8 @@ public class Item : MonoBehaviour
                 }
                 level++;
                 break;
-
-            case ItemData.ItemType.Bomb:
-            //여러개의 case를 붙여서 로직을 실행하게 할 수 있음
-            //같은 로직이므로 같이 묶어서 코드 실행
-            if (level == 0) {
-                GameObject newWeapon = new GameObject(); //새로운 게임오브젝트를 코드로 생성
-                weapon = newWeapon.AddComponent<Weapon>(); 
-                //AddComponent<T> : 게임 오브젝트에 T 컴포넌트를 추가하는 모습
-                //AddComponenet 함수 반환 값을 미리 선언한 변수에 저장
-                weapon.Init(data); //weapon의 데이터를 초기화
-            }
-            else {
-                float nextDamage = data.baseDamage;
-                int nextCount = 0;
-                float nextSpeed = data.baseSpeed;
-
-                //처음 이후의 레벨업은 데미지와 횟수를 계산
-                nextDamage += data.baseDamage * data.damages[level];
-                nextCount += data.counts[level];
-                nextSpeed += data.baseSpeed * data.speedRate[level];
-
-                //weapon에 작성된 레벨업 함수를 활용하여 레벨업 적용
-                weapon.LevelUp(nextDamage, nextCount, nextSpeed);
-            }
-            level++;
-            break;
-            case ItemData.ItemType.Alco:
+            case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
-            case ItemData.ItemType.Gym:
-            case ItemData.ItemType.Coffee:
                 if (level == 0) {
                     GameObject newGear = new GameObject();
                     gear = newGear.AddComponent<Gear>(); //AddComponenet 함수 반환 값을 미리 선언한 변수에 저장
@@ -136,12 +102,7 @@ public class Item : MonoBehaviour
             level++;
             break;
             case ItemData.ItemType.Heal:
-                float healthrecover = GameManager.instance.health + 50;
-                if (GameManager.instance.maxHealth - GameManager.instance.health > 50)
-                    GameManager.instance.health = healthrecover;
-                    
-                else 
-                    GameManager.instance.health = GameManager.instance.maxHealth;
+                GameManager.instance.health = GameManager.instance.maxHealth;
             break;
 
 
