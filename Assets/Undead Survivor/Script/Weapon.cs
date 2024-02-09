@@ -1,13 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using Unity.Mathematics;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
-using UnityEngine.InputSystem.Android;
-using UnityEngine.Rendering.UI;
 
 public class Weapon : MonoBehaviour
 {
@@ -19,9 +14,7 @@ public class Weapon : MonoBehaviour
     public float speed; //회전속도 혹은 연사 속도
 
     float timer;
-    public int per;
     Player player;
-
 
     float ecobagtimer;
     Coroutine ecobagCoroutine; // Ecobag 활성화를 제어하는 코루틴을 저장하는 변수
@@ -30,7 +23,6 @@ public class Weapon : MonoBehaviour
     float friendtimer;
     Coroutine friendCoroutine; // Ecobag 활성화를 제어하는 코루틴을 저장하는 변수
     bool isFriend = false;
-
 
 
 
@@ -45,8 +37,6 @@ public class Weapon : MonoBehaviour
         
         //무기 id에 따라 로직을 분리할 switch문 작성
         switch (id){
-            
-           
             case 0: //근접무기 : 삽
                 transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
 
@@ -67,9 +57,8 @@ public class Weapon : MonoBehaviour
                     ecobagtimer = 0f; //speed 보다 커지면 초기화하면서 발사
                     FireEcobag();
                 }
-
                 break;
-            case 7:
+            default:
                 timer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
 
                 if (timer > speed) {
@@ -77,20 +66,14 @@ public class Weapon : MonoBehaviour
                     Fire();
                 }
                 break;
-            case 11: //근접무기 : 삽
-                transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
-                break;
         }
-
 
     }
 
-    public void LevelUp(float damage,int count, float speed)
+    public void LevelUp(float damage,int count)
     {
         this.damage = damage * Character.Damage;
         this.count += count;
-        this.speed = speed;
-
 
         if (id == 0)
             BatchFriend();
@@ -99,9 +82,7 @@ public class Weapon : MonoBehaviour
             BatchEcobag();
         }
 
-
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver); 
-        Debug.Log("ApplyGear"); 
         //아이템을 누를 때 데미지 카운트가 적용되므로, 기어 데미지가 초기화 될 수 있기 때문에 적용
     }
 
@@ -130,45 +111,29 @@ public class Weapon : MonoBehaviour
         
         //무기 id에 따라 로직을 분리할 switch문 작성
         switch (id){
-            
-            
-            case 0: //근접무기 : 수호친구
+            case 0: //근접무기 : 삽
                 speed = 150 * Character.WeaponSpeed;
                 BatchFriend();
                 break;
-            
-            case 7: //원거리 무기 : 폭탄
-                speed = 1f * Character.WeaponRate;
-                break;
-            
-            case 11: //근접무기 : 삽
-                speed = 150 * Character.WeaponSpeed;
-                //Batch();
-                break;
-
             case 5:
                 //speed = 0.5f * Character.WeaponRate;
                 BatchEcobag();
                 break;
-
             default: //원거리 무기 : 총
-                speed = 1f * Character.WeaponRate;
+                speed = 0.5f * Character.WeaponRate;
                 break;
-            
         }
-        //Head Set
-        // Hand hand = player.hands[(int)data.itemType]; //enum의 데이터는 정수 형태로도 사용 가능
-        //                                             //enum 값 앞에 int 타입을 작성하여 강제 형 변환
-        // hand.spriter.sprite = data.hand;
-        // hand.gameObject.SetActive(true);
+        ////Head Set
+        //Hand hand = player.hands[(int)data.itemType]; //enum의 데이터는 정수 형태로도 사용 가능
+        //                                            //enum 값 앞에 int 타입을 작성하여 강제 형 변환
+        //hand.spriter.sprite = data.hand;
+        //hand.gameObject.SetActive(true);
 
 
-        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
-        Debug.Log("ApplyGear"); 
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver); 
         //BroadcastMessage : 특정 함수 호출을 모든 자식에게 방송하는 함수
         ///player가 가지고 있는 모든 기어에 한해서 applyGear가 되도록 하는 것
         ///오류를 막기 위해 DontRequireReceiver를 두번째 인자값으로 추가
-        
     }
 
     //void Batch() //Batch : 자료를 모아 두었다가 일괄해서 처리하는 자료처리의 형태
@@ -203,7 +168,6 @@ public class Weapon : MonoBehaviour
 
     void BatchFriend() //Batch : 자료를 모아 두었다가 일괄해서 처리하는 자료처리의 형태
     {
-
         for (int index = 0; index < count; index++)
         {
             Transform bullet;
@@ -217,26 +181,23 @@ public class Weapon : MonoBehaviour
 
 //                bullet.gameObject.SetActive(true);
 
-
             }
             else
             {
                 bullet = GameManager.instance.pool.Get(prefabId).transform;
                 //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
-                weaponRenderers[index] = bullet.GetComponent<SpriteRenderer>();
                 bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
-                
             }
+
+
 
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
-            
 
             Vector3 rotVec = Vector3.forward * 360 * index / count;
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f, Space.World); //이동 방향은 Space World 기준으로 
             bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
-
                                                                             //-100  is Infinity Per.
         }
     }
@@ -325,11 +286,9 @@ public class Weapon : MonoBehaviour
                 bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
             }
 
-
         }
 
     }
-
 
 
 
@@ -350,7 +309,6 @@ public class Weapon : MonoBehaviour
         //효과음을 재생할 부분마다 재생함수 호출
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);            
     }
-
 
     void FireFriend()
     {
@@ -505,6 +463,5 @@ public class Weapon : MonoBehaviour
 
         friendCoroutine = null; // 코루틴 변수 초기화
     }
-
 
 }

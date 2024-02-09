@@ -33,6 +33,4 @@ public class Character : MonoBehaviour
         //함수가 아닌 속성을 작성
         get { return GameManager.instance.playerId == 3? 1 : 0;}
     }
-
-    
 }

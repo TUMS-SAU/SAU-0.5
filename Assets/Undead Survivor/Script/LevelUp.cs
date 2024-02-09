@@ -75,7 +75,7 @@ public class LevelUp : MonoBehaviour
 
             //3. 만렙 아이템의 경우는 소비아이템으로 대체
             if(ranItem.level == ranItem.data.damages.Length){
-                items[5].gameObject.SetActive(true);
+                items[4].gameObject.SetActive(true);
                 //소비아이템이 여러개인 경우 (예: 4번부터 7번까지 소비아이템일때)
                 //items[Random.Range(4,7)].gameObject.setActive(true);
             }
