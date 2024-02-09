@@ -20,13 +20,9 @@ public class ItemData : ScriptableObject
     [Header("# Level Data")]
     public float baseDamage;
     public int baseCount;
-    public float baseCoolTime;
-    public int baseShooting;
 
     public float[] damages;
     public int[] counts;
-    public float[] coolTime;
-    public int[] shooting;
 
 
     [Header("# Weapon")]

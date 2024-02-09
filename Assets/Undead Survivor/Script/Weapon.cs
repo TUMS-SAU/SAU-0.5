@@ -336,7 +336,7 @@ public class Weapon : MonoBehaviour
                     //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
                     //bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
 
-                    //friendRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+                    friendRenderers[index] = bullet.GetComponent<SpriteRenderer>();
 
                 }
 
