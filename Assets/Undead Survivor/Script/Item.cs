@@ -48,18 +48,17 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Shoe:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level]);
                 break;
+            case ItemData.ItemType.Pencil:
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
+                break;
+            //데미지 % 상승을 보여줄 땐 100 곱하기
             default:
                 textDesc.text = string.Format(data.itemDesc);
                 break;
         }
 
     }
-    //void LateUpdate()
-    //{
-        //// textLevel.text = "LV." + (level + 1); //이렇게 하면 레벨 1부터 시작
-        //textLevel.text = "LV." + level; //이렇게 하면 레벨 0부터 시작
-        //무기가 몇 레벨인지 측정
-    //}
+
 
     public void OnClick()
     {
@@ -105,6 +104,8 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Heal:
                 GameManager.instance.health = GameManager.instance.maxHealth;
             break;
+
+
         }
 
         //버튼이 최대레벨로 도달하면 버튼 클릭이 불가능하도록 설정
