@@ -33,7 +33,6 @@ public class Spawner : MonoBehaviour
         if (timer > spawnData[level].spawnTime){
             timer = 0;
             Spawn();
-            Spawn2();
         }
 
         // if (Input.GetButtonDown("Jump")) {
@@ -44,17 +43,6 @@ public class Spawner : MonoBehaviour
     void Spawn()
     {
         GameObject enemy = GameManager.instance.pool.Get(0); 
-
-        //적의 위치를 spwanpoint를 통해 지정
-        enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
-
-        enemy.GetComponent<Enemy>().Init(spawnData[level]); 
-
-    }
-
-    void Spawn2()
-    {
-        GameObject enemy = GameManager.instance.pool.Get(1); 
 
         //적의 위치를 spwanpoint를 통해 지정
         enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
