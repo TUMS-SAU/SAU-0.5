@@ -7,7 +7,7 @@ using UnityEngine;
 public class ItemData : ScriptableObject
 {
     //아이템 타입을 간단하게 관리할 수 있도록 enum으로 저장
-    public enum ItemType {Melee, Range, Glove, Shoe, Heal} //근접공격, 원거리공격, 글러브, 신발, 체력포션
+    public enum ItemType {Melee, Range, Glove, Shoe, Heal, Ecobag} //근접공격, 원거리공격, 글러브, 신발, 체력포션
 
     [Header("# Main Info")]
     //아이템의 각 속성을 변수로 적어주기
@@ -26,5 +26,5 @@ public class ItemData : ScriptableObject
     
     [Header("# Weapon")]
     public GameObject projectile;
-    public Sprite hand;
+    //public Sprite hand;
 }
