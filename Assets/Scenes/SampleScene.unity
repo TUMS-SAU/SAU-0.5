@@ -998,7 +998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLive: 0
   gameTime: 0
-  maxGameTime: 100
+  maxGameTime: 300
   playerId: 0
   health: 0
   maxHealth: 100
@@ -1006,7 +1006,7 @@ MonoBehaviour:
   level: 0
   kill: 0
   exp: 0
-  nextExp: 030000000100000001000000010000000100000001000000010000000100000001000000010000000a000000
+  nextExp: 03000000050000000a000000460000006400000096000000d20000001801000068010000c201000058020000
   pool: {fileID: 1329744575}
   player: {fileID: 993338346}
   uiLevelUp: {fileID: 380107326}
@@ -15993,7 +15993,7 @@ GameObject:
   - component: {fileID: 1286311350}
   - component: {fileID: 1286311349}
   m_Layer: 5
-  m_Name: Item 0
+  m_Name: Showvel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
