@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03afee9e7adce2a46b5ece0f251d207e, type: 3}
-  m_Name: Item 2
+  m_Name: Gym
   m_EditorClassIdentifier: 
-  itemType: 2
-  itemId: 2
-  itemName: "\uC220"
-  itemDesc: "\uC5F0\uC0AC\uC18D\uB3C4 {0}% \uC99D\uAC00"
-  itemIcon: {fileID: 21300000, guid: c728798ac2cf2e94fa6218ae54d9d9ef, type: 3}
+  itemType: 4
+  itemId: 4
+  itemName: "\uC544\uB839"
+  itemDesc: "\uC0DD\uBA85\uB825 {0}% \uC99D\uAC00"
+  itemIcon: {fileID: 21300000, guid: 947138c2bb826b4499bc2630ce344f33, type: 3}
   baseDamage: 0
   baseCount: 0
   baseSpeed: 0
   damages:
-  - 0.1
   - 0.2
-  - 0.35
-  - 0.5
-  - 0.75
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
   counts: 0000000000000000000000000000000000000000
   speedRate:
   - 0
