@@ -30,7 +30,10 @@ public class AudioManager : MonoBehaviour
     {
         instance = this;
         Init(); //초기화 함수
+
+   
     }
+
 
     void Init()
     {
