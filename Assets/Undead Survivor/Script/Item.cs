@@ -40,9 +40,13 @@ public class Item : MonoBehaviour
         switch(data.itemType){
             case ItemData.ItemType.Melee:
             case ItemData.ItemType.Range:
+            case ItemData.ItemType.Ecobag:
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
+                break;
+
             case ItemData.ItemType.Bomb:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level],data.speedRate[level]*100);
-                //데미지 % 상승을 보여줄 땐 100 곱하기
+    //데미지 % 상승을 보여줄 땐 100 곱하기
                 break;
             case ItemData.ItemType.Alco:
             case ItemData.ItemType.Shoe:
@@ -50,24 +54,47 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Coffee:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level]);
                 break;
+            case ItemData.ItemType.Pencil:
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
+                break;
+            //데미지 % 상승을 보여줄 땐 100 곱하기
             default:
                 textDesc.text = string.Format(data.itemDesc);
                 break;
         }
 
     }
-    //void LateUpdate()
-    //{
-        //// textLevel.text = "LV." + (level + 1); //이렇게 하면 레벨 1부터 시작
-        //textLevel.text = "LV." + level; //이렇게 하면 레벨 0부터 시작
-        //무기가 몇 레벨인지 측정
-    //}
+
 
     public void OnClick()
     {
         switch (data.itemType){
             case ItemData.ItemType.Melee: 
             case ItemData.ItemType.Range:
+            case ItemData.ItemType.Ecobag:
+                //여러개의 case를 붙여서 로직을 실행하게 할 수 있음
+                //같은 로직이므로 같이 묶어서 코드 실행
+                if (level == 0) {
+                    GameObject newWeapon = new GameObject(); //새로운 게임오브젝트를 코드로 생성
+                    weapon = newWeapon.AddComponent<Weapon>(); 
+                    //AddComponent<T> : 게임 오브젝트에 T 컴포넌트를 추가하는 모습
+                    //AddComponenet 함수 반환 값을 미리 선언한 변수에 저장
+                    weapon.Init(data); //weapon의 데이터를 초기화
+                }
+                else {
+                    float nextDamage = data.baseDamage;
+                    int nextCount = 0;
+
+                    //처음 이후의 레벨업은 데미지와 횟수를 계산
+                    nextDamage += data.baseDamage * data.damages[level];
+                    nextCount += data.counts[level];
+
+                    //weapon에 작성된 레벨업 함수를 활용하여 레벨업 적용
+                    weapon.LevelUp(nextDamage, nextCount);
+                }
+                level++;
+                break;
+
             case ItemData.ItemType.Bomb:
             //여러개의 case를 붙여서 로직을 실행하게 할 수 있음
             //같은 로직이므로 같이 묶어서 코드 실행
@@ -116,6 +143,8 @@ public class Item : MonoBehaviour
                 else 
                     GameManager.instance.health = GameManager.instance.maxHealth;
             break;
+
+
         }
 
         //버튼이 최대레벨로 도달하면 버튼 클릭이 불가능하도록 설정

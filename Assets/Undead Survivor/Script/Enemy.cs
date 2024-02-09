@@ -83,6 +83,7 @@ public class Enemy : MonoBehaviour
             return;
         
         health -= collision.GetComponent<Bullet>().damage; //맞은 무기의 데미지만큼 체력에서 깎기
+        //Debug.Log("tlqkf");
         //코루틴은 StartCoroutine으로 호출
         StartCoroutine(KnockBack()); //StartCoroutine("KnockBack") 도 가능
 
