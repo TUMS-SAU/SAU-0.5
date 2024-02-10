@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public int playerId;
     public float health;
     public float maxHealth = 100;
+    public float healthStand = 100;
     public int level;   
     public int kill;
     public int exp;

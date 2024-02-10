@@ -35,7 +35,7 @@ public class Gear : MonoBehaviour
     void ApplyGear()
     {
         switch(type) {
-            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Alco:
                 //장갑은 무기 속도를 올림
                 RateUp();
                 break;

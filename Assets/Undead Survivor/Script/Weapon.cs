@@ -70,10 +70,11 @@ public class Weapon : MonoBehaviour
 
     }
 
-    public void LevelUp(float damage,int count)
+    public void LevelUp(float damage,int count, float speed)
     {
         this.damage = damage * Character.Damage;
         this.count += count;
+        this.speed = speed;
 
         if (id == 0)
             BatchFriend();
