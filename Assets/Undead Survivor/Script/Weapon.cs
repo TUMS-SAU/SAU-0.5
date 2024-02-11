@@ -352,7 +352,7 @@ public class Weapon : MonoBehaviour
     void FireEcobag()
     {
         // Ecobag이 활성화되어있지 않고, id가 5인 경우에만 Ecobag 생성
-        if (id == 5 && !isEcobag)
+        if (id == 3 && !isEcobag)
         {
             ecobagCoroutine = StartCoroutine(ActivateEcobag()); // Ecobag 활성화 코루틴 시작
         }
