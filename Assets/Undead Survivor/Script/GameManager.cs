@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     public Result uiResult;
     public Transform uiJoy;
     public GameObject enemyCleaner;
+    public Pause uipause;
 
 
     //초기화를 스크립트 내에서 해줘야햠 

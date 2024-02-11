@@ -6,7 +6,7 @@ using UnityEngine.UI; //UI 컴포넌트를 사용할 때는 UnityEngine.UI 네�
 
 public class HUD : MonoBehaviour
 {
-    public enum InfoType{Exp, Level, Kill, Time, Health} //다루게 될 데이터를 미리 열거형 enum으로 선언
+    public enum InfoType{Exp, Level, Kill, Time, Health, Pause} //다루게 될 데이터를 미리 열거형 enum으로 선언
     public InfoType type;
 
     Text myText;
@@ -51,6 +51,7 @@ public class HUD : MonoBehaviour
                 float maxHealth = GameManager.instance.maxHealth;
                 mySlider.value = curHealth / maxHealth;
                 break;
+            
         }
     }
 }
