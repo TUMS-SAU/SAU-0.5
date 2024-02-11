@@ -49,7 +49,7 @@ public class Item : MonoBehaviour
                 textDesc.text = string.Format(data.itemDesc, data.damages[level]);
                 break;
             case ItemData.ItemType.Pencil:
-                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level],data.speedRate[level] * 100);
                 break;
             //데미지 % 상승을 보여줄 땐 100 곱하기
             default:
@@ -92,6 +92,8 @@ public class Item : MonoBehaviour
                 break;
             case ItemData.ItemType.Alco:
             case ItemData.ItemType.Shoe:
+            case ItemData.ItemType.Coffee:
+            case ItemData.ItemType.Gym:
                 if (level == 0) {
                     GameObject newGear = new GameObject();
                     gear = newGear.AddComponent<Gear>(); //AddComponenet 함수 반환 값을 미리 선언한 변수에 저장
@@ -104,7 +106,12 @@ public class Item : MonoBehaviour
             level++;
             break;
             case ItemData.ItemType.Heal:
-                GameManager.instance.health = GameManager.instance.maxHealth;
+                float healthrecover = GameManager.instance.health + 50;
+                if (GameManager.instance.maxHealth - GameManager.instance.health > 50)
+                    GameManager.instance.health = healthrecover;
+                    
+                else 
+                    GameManager.instance.health = GameManager.instance.maxHealth;
             break;
 
 

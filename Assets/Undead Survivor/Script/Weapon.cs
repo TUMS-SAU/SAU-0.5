@@ -37,7 +37,7 @@ public class Weapon : MonoBehaviour
         
         //무기 id에 따라 로직을 분리할 switch문 작성
         switch (id){
-            case 0: //근접무기 : 삽
+            case 0: //근접무기 : 수호친구
                 transform.Rotate(Vector3.back * speed * Time.deltaTime); //회전 속도에 맞춰서 돌도록 하기
 
                 friendtimer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
