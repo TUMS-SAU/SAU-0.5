@@ -125,6 +125,7 @@ public class GameManager : MonoBehaviour
 
     public void GameQuit()
     {
+        Debug.Log("게임종료");
         Application.Quit(); //게임을 종료하는 함수 실행 
         //에디터를 종료하는 기능이 아니므로, 빌드 버전에서만 작동
     }
