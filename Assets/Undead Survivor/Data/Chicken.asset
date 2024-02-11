@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03afee9e7adce2a46b5ece0f251d207e, type: 3}
-  m_Name: Food
+  m_Name: Chicken
   m_EditorClassIdentifier: 
-  itemType: 4
+  itemType: 5
   itemId: 4
   itemName: "\uCE58\uD0A8"
   itemDesc: "\uC0DD\uBA85\uB825 50 \uCD94\uAC00"
