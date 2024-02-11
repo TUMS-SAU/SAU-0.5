@@ -51,7 +51,6 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Pencil:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level],data.speedRate[level] * 100);
                 break;
-            //데미지 % 상승을 보여줄 땐 100 곱하기
             default:
                 textDesc.text = string.Format(data.itemDesc);
                 break;
@@ -105,10 +104,18 @@ public class Item : MonoBehaviour
                 }
             level++;
             break;
-            case ItemData.ItemType.Heal:
-                float healthrecover = GameManager.instance.health + 50;
+            case ItemData.ItemType.LargeHeal:
+                float largehealthrecover = GameManager.instance.health + 50;
                 if (GameManager.instance.maxHealth - GameManager.instance.health > 50)
-                    GameManager.instance.health = healthrecover;
+                    GameManager.instance.health = largehealthrecover;
+                    
+                else 
+                    GameManager.instance.health = GameManager.instance.maxHealth;
+            break;
+            case ItemData.ItemType.SmallHeal:
+                float smallhealthrecover = GameManager.instance.health + 30;
+                if (GameManager.instance.maxHealth - GameManager.instance.health > 30)
+                    GameManager.instance.health = smallhealthrecover;
                     
                 else 
                     GameManager.instance.health = GameManager.instance.maxHealth;

@@ -49,7 +49,7 @@ public class Weapon : MonoBehaviour
                 }
 
                 break;
-            case 5:
+            case 3:
                 ecobagtimer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
 
                 if (!isEcobag && ecobagtimer >= 1.35f)
@@ -78,7 +78,7 @@ public class Weapon : MonoBehaviour
 
         if (id == 0)
             BatchFriend();
-        if (id == 5)
+        if (id == 3)
         {
             BatchEcobag();
         }
@@ -116,7 +116,7 @@ public class Weapon : MonoBehaviour
                 speed = 150 * Character.WeaponSpeed;
                 BatchFriend();
                 break;
-            case 5:
+            case 3:
                 //speed = 0.5f * Character.WeaponRate;
                 BatchEcobag();
                 break;
