@@ -99,4 +99,21 @@ public class Player : MonoBehaviour
             GameManager.instance.GameOver();
         }
     }
+
+    //대미지 입힐 함수(적 총알)
+    public void TakeDamage(float damage)
+    {
+        GameManager.instance.health -= damage;
+
+        if (GameManager.instance.health <= 0)
+        {
+            // 묘비 애니메이션을 보여줄 instance를 제외하고 비활성화
+            for (int index = 2; index < transform.childCount; index++)
+            {
+                transform.GetChild(index).gameObject.SetActive(false);
+            }
+            anim.SetTrigger("Dead");
+            GameManager.instance.GameOver();
+        }
+    }
 }
