@@ -40,4 +40,4 @@ MonoBehaviour:
   - 0.2
   - 0
   - 0
-  projectile: {fileID: 5660906349416518559, guid: 6ce5252c71f9fcd4b884163ed6b4cff5, type: 3}
+  projectile: {fileID: 5660906349416518559, guid: b4ebbcf7ea396a94e9da63e768d0a755, type: 3}
