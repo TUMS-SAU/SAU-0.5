@@ -39,13 +39,14 @@ public class Item : MonoBehaviour
         //아이템 타입별로 설명 유무가 다르므로 switch로 케이스 나누기
         switch(data.itemType){
             case ItemData.ItemType.Melee:
-            case ItemData.ItemType.Range:
             case ItemData.ItemType.Ecobag:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
                 //데미지 % 상승을 보여줄 땐 100 곱하기
                 break;
             case ItemData.ItemType.Alco:
             case ItemData.ItemType.Shoe:
+            case ItemData.ItemType.Coffee:
+            case ItemData.ItemType.Gym:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level]);
                 break;
             case ItemData.ItemType.Pencil:
@@ -63,7 +64,7 @@ public class Item : MonoBehaviour
     {
         switch (data.itemType){
             case ItemData.ItemType.Melee: 
-            case ItemData.ItemType.Range:
+            case ItemData.ItemType.Pencil:
             case ItemData.ItemType.Ecobag:
                 //여러개의 case를 붙여서 로직을 실행하게 할 수 있음
                 //같은 로직이므로 같이 묶어서 코드 실행
