@@ -22,6 +22,7 @@ public class Gear : MonoBehaviour
         rate = data.damages[0];
         //처음에 장비가 새롭게 추가될 때 로직 적용 함수를 호출
         ApplyGear(); 
+        ApplyGearHealth();
     }
 
     public void LevelUp(float rate)
@@ -43,9 +44,22 @@ public class Gear : MonoBehaviour
                 //신발은 플레이어의 이동속도를 올림
                 SpeedUp();
                 break;
+            case ItemData.ItemType.Coffee:
+                DamageUp();
+                break;
         }
     }
 
+    void ApplyGearHealth()
+    {
+        switch(type){
+            case ItemData.ItemType.Gym:
+                //아령은 최대 체력을 올림
+                MaxhealthUp();
+                Debug.Log("ApplyGearForGym");
+                break;
+        }
+    }
     void RateUp() //공속을 올리는 함수
     {
         //플레이어로 올라가서 모든 weapon을 가져오기
@@ -67,10 +81,33 @@ public class Gear : MonoBehaviour
         }
     }
 
+    
+
     void SpeedUp() //이속을 올리는 함수
     {
         float speed = 3 * Character.Speed;
         GameManager.instance.player.speed = speed + speed * rate;
 
+    }
+
+    void MaxhealthUp()
+    {
+        float maxHealth = GameManager.instance.maxHealth;
+        GameManager.instance.maxHealth = maxHealth + maxHealth * rate;
+    }
+
+    void DamageUp()
+    {
+        //플레이어로 올라가서 모든 weapon을 가져오기
+        Weapon[] weapons = transform.parent.GetComponentsInChildren<Weapon>();
+
+        foreach(Weapon weapon in weapons){
+            switch(weapon.id){
+                default:
+                    float damage = weapon.damage;
+                    weapon.damage = damage + damage * rate;
+                    break;
+            }
+        }
     }
 }
