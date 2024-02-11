@@ -51,7 +51,6 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Pencil:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level],data.speedRate[level] * 100);
                 break;
-            //데미지 % 상승을 보여줄 땐 100 곱하기
             default:
                 textDesc.text = string.Format(data.itemDesc);
                 break;
