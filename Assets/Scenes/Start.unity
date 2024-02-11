@@ -785,7 +785,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 1.564, y: -235}
-  m_SizeDelta: {x: 465.9175, y: 90}
+  m_SizeDelta: {x: 480, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &211250776
 MonoBehaviour:
@@ -1386,7 +1386,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -111.457344, y: -30}
-  m_SizeDelta: {x: 164.1707, y: 90}
+  m_SizeDelta: {x: 170, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &370818946
 MonoBehaviour:
@@ -2540,7 +2540,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 102.18601, y: -30}
-  m_SizeDelta: {x: 168.4498, y: 90}
+  m_SizeDelta: {x: 170, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1062893713
 MonoBehaviour:
@@ -3165,6 +3165,7 @@ MonoBehaviour:
   uiResult: {fileID: 0}
   uiJoy: {fileID: 0}
   enemyCleaner: {fileID: 0}
+  uipause: {fileID: 0}
 --- !u!4 &1301544463
 Transform:
   m_ObjectHideFlags: 0
@@ -4244,7 +4245,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.8996, y: -440}
-  m_SizeDelta: {x: 468.468, y: 90}
+  m_SizeDelta: {x: 480, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1873874235
 MonoBehaviour:
