@@ -1440,8 +1440,6 @@ GameObject:
   - component: {fileID: 503992848}
   - component: {fileID: 503992847}
   - component: {fileID: 503992846}
-  - component: {fileID: 503992849}
-  - component: {fileID: 503992850}
   m_Layer: 5
   m_Name: Mute_bt
   m_TagString: Untagged
@@ -1513,7 +1511,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 5c3006f6292c8460c98aebb9a2cc3f2c, type: 3}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
         m_MethodName: 
         m_Mode: 5
@@ -1563,34 +1561,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 503992844}
   m_CullTransparentMesh: 1
---- !u!114 &503992849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 503992844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cb560aa4e45047ef84593454cbcd125, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &503992850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 503992844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c3006f6292c8460c98aebb9a2cc3f2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  muteToggle: {fileID: 0}
-  soundButton: {fileID: 503992846}
-  soundOnSprite: {fileID: 21300000, guid: 03fb986de158741759c45a13f3e18ef7, type: 3}
-  soundOffSprite: {fileID: 21300000, guid: dad330282dc9341b7932b92672064f92, type: 3}
 --- !u!1 &558789187
 GameObject:
   m_ObjectHideFlags: 0
