@@ -47,7 +47,7 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Shoe:
             case ItemData.ItemType.Coffee:
             case ItemData.ItemType.Gym:
-                textDesc.text = string.Format(data.itemDesc, data.damages[level]);
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100);
                 break;
             case ItemData.ItemType.Pencil:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level],data.speedRate[level] * 100);
