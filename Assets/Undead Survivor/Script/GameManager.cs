@@ -65,7 +65,9 @@ public class GameManager : MonoBehaviour
         player.gameObject.SetActive(true);
 
         //기본 무기 지급을 위한 함수 호출에서 인자 값을 캐릭터 ID로 변경
-        uiLevelUp.Select(playerId % 2);
+        //uiLevelUp.Select(playerId % 2);
+        // 에코백으로 시작
+        uiLevelUp.Select(2);
 
         Resume();
 
