@@ -783,7 +783,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLive: 0
   gameTime: 0
-  maxGameTime: 300
+  maxGameTime: 100
   playerId: 0
   health: 0
   maxHealth: 100
@@ -16144,8 +16144,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabs:
-  - {fileID: 3227744900887914900, guid: 559df74884b08b14d8ff7ae14fec11b7, type: 3}
   - {fileID: 3227744900887914900, guid: 16c62ee5f9b3dc147aca71eacad5fa82, type: 3}
+  - {fileID: 3227744900887914900, guid: 559df74884b08b14d8ff7ae14fec11b7, type: 3}
   - {fileID: 8462090051115702122, guid: cb9a6a0454782934192e6362b9a14198, type: 3}
   - {fileID: 5660906349416518559, guid: 6ce5252c71f9fcd4b884163ed6b4cff5, type: 3}
   - {fileID: 1326991691498255266, guid: 9ff0d4491b1c03f48acf3e2fc7a015ba, type: 3}
