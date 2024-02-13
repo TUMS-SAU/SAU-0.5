@@ -3001,9 +3001,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1301544462}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: GameQuit
+      - m_Target: {fileID: 1301544464}
+        m_TargetAssemblyTypeName: GameQuit, Assembly-CSharp
+        m_MethodName: GameQuitMain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3128,44 +3128,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1301544463}
-  - component: {fileID: 1301544462}
+  - component: {fileID: 1301544464}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: GameQuitMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1301544462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301544461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cb2dbfc93b32de44ad931cc2276746d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isLive: 0
-  gameTime: 0
-  maxGameTime: 20
-  playerId: 0
-  health: 0
-  maxHealth: 100
-  healthStand: 100
-  level: 0
-  kill: 0
-  exp: 0
-  nextExp: 
-  pool: {fileID: 0}
-  player: {fileID: 0}
-  uiLevelUp: {fileID: 0}
-  uiResult: {fileID: 0}
-  uiJoy: {fileID: 0}
-  enemyCleaner: {fileID: 0}
-  uipause: {fileID: 0}
 --- !u!4 &1301544463
 Transform:
   m_ObjectHideFlags: 0
@@ -3181,6 +3151,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1301544464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301544461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e1c38d62a7f89c42afbffd86094cb89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1355160786
 GameObject:
   m_ObjectHideFlags: 0
@@ -3731,50 +3713,6 @@ Transform:
   m_GameObject: {fileID: 1588857779}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.03099584, y: -0.37195253, z: 0.0455643}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1677018822
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1677018824}
-  - component: {fileID: 1677018823}
-  m_Layer: 0
-  m_Name: SoundImageChange
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1677018823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677018822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cb560aa4e45047ef84593454cbcd125, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1677018824
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677018822}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
