@@ -50,6 +50,10 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60; 
         //게임매니저에서 targetFrameRate속성을 직접 설정, 지정해주지 않으면 기본 30
     }
+    void Start()
+    {
+        GameStart(0);
+    }
 
     public void GameStart(int id) //int 변수를 추가
     {
