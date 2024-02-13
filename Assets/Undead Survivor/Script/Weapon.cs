@@ -42,7 +42,7 @@ public class Weapon : MonoBehaviour
 
                 friendtimer += Time.deltaTime; //deltaTime : 한 프레임이 소비하는 시간
 
-                if (!isFriend && friendtimer >= 1.35f)
+                if (!isFriend && friendtimer >= 2f)
                 {
                     friendtimer = 0f; //speed 보다 커지면 초기화하면서 발사
                     FireFriend();
@@ -223,7 +223,7 @@ public class Weapon : MonoBehaviour
 
                     bullet = transform.GetChild(index);
 
-                    bullet.gameObject.SetActive(true);
+//                    bullet.gameObject.SetActive(true);
 
                     //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
                     //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
@@ -258,7 +258,7 @@ public class Weapon : MonoBehaviour
                     bullet = transform.GetChild(index);
 
 
-                    bullet.gameObject.SetActive(true);
+//                    bullet.gameObject.SetActive(true);
                     //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
                     //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
                 }
@@ -354,23 +354,108 @@ public class Weapon : MonoBehaviour
         // Ecobag이 활성화되어있지 않고, id가 5인 경우에만 Ecobag 생성
         if (id == 3 && !isEcobag)
         {
-            ecobagCoroutine = StartCoroutine(ActivateEcobag()); // Ecobag 활성화 코루틴 시작
+            SpriteRenderer[] ecobagRenderers = new SpriteRenderer[count];
+
+            for (int index = 0; index < count; index++)
+            {
+                Transform bullet;
+
+                //bullet 초기화
+                if (index < transform.childCount)
+                {//자신의 자식 오브젝트 개수 확인은 childCount속성 
+                    bullet = transform.GetChild(index);
+                    //기존 오브젝트를 먼저 활용하고 모자란 것은 풀링에서 가져오기
+                    //index가 아직 childCount 범위 내라면 GetChild 함수로 가져오기
+
+                    ecobagRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+
+                }
+                else
+                {
+                    bullet = GameManager.instance.pool.Get(prefabId).transform;
+                    //poolManager에서 원하는 프리팹을 가져오고 무기의 개수(count) 만큼 돌려서 배치
+                    //bullet.parent = transform; //parent 속성을 통해 부모를 내 자신(스크립트가 들어간 곳)으로 변경
+
+                    ecobagRenderers[index] = bullet.GetComponent<SpriteRenderer>();
+
+                }
+
+            }
+
+            ecobagCoroutine = StartCoroutine(ActivateEcobag(ecobagRenderers)); // Ecobag 활성화 코루틴 시작
         }
     }
 
 
 
     // Ecobag을 활성화하고 비활성화하는 코루틴
-    IEnumerator ActivateEcobag()
+    IEnumerator ActivateEcobag(SpriteRenderer[] renderers)
     {
-        isEcobag = true;
+        //isEcobag = true;
 
-        // Ecobag 생성
-        BatchEcobag();
+        //// Ecobag 생성
+        //BatchEcobag();
 
         
 
-        yield return new WaitForSeconds(1.35f); // Ecobag이 활성화된 후 일정 시간 대기
+        //yield return new WaitForSeconds(1.35f); // Ecobag이 활성화된 후 일정 시간 대기
+
+        //// Ecobag 생성되었던 무기들 제거
+        //for (int i = 0; i < transform.childCount; i++)
+        //{
+        //    transform.GetChild(i).gameObject.SetActive(false);
+        //}
+
+        //isEcobag = false;
+        //ecobagtimer = 0f;
+
+        //ecobagCoroutine = null; // 코루틴 변수 초기화
+
+
+
+        float elapsedTime = 0f;
+        float duration = 1f;
+        float ecotime = 0.35f;
+
+        isEcobag = true;
+
+
+        // Friend 위치를 정한다
+        BatchEcobag();
+
+        for (int index = 0; index < count; index++)
+        {
+            transform.GetChild(index).gameObject.SetActive(true);
+        }
+            
+
+        // 전부 완전히 나타나게 하기
+        SetRenderersAlpha(renderers, 1f);
+
+
+
+        // 일정 시간 대기
+        yield return new WaitForSeconds(ecotime); // Ecobag이 활성화된 후 일정 시간 대기
+
+
+        // 사라지는 애니메이션
+        elapsedTime = 0f;
+
+        while (elapsedTime <= duration)
+        {
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / duration);
+            SetRenderersAlpha(renderers, alpha);
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+
+        }
+
+        // 전부 완전히 사라지게 하기
+        SetRenderersAlpha(renderers, 0f);
+
+        elapsedTime = 0f;
 
         // Ecobag 생성되었던 무기들 제거
         for (int i = 0; i < transform.childCount; i++)
@@ -378,6 +463,7 @@ public class Weapon : MonoBehaviour
             transform.GetChild(i).gameObject.SetActive(false);
         }
 
+        // 변수 초기화
         isEcobag = false;
         ecobagtimer = 0f;
 
@@ -399,7 +485,7 @@ public class Weapon : MonoBehaviour
     IEnumerator ActivateFriend(SpriteRenderer[] renderers)
     {
         float elapsedTime = 0f;
-        float duration = 1.35f;
+        float duration = 1f;
 
         isFriend = true;
 
