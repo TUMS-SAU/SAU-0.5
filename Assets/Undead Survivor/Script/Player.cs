@@ -104,6 +104,7 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damage)
     {
         GameManager.instance.health -= damage;
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
 
         if (GameManager.instance.health <= 0)
         {
@@ -115,5 +116,6 @@ public class Player : MonoBehaviour
             anim.SetTrigger("Dead");
             GameManager.instance.GameOver();
         }
+
     }
 }
