@@ -73,28 +73,28 @@ public class AcheiveManager : MonoBehaviour
 
     void CheckAcheive(Acheive acheive)
     {
-        bool isAcheive = false;
+        //bool isAcheive = false;
 
         switch(acheive){
             case Acheive.UnlockPotato: //킬수가 10마리 이상이면 언락
-                if(GameManager.instance.isLive){ //단, 마무리시에 일괄 죽임으로는 안되도록 
-                    isAcheive = GameManager.instance.kill >= 10;} 
+                // if(GameManager.instance.isLive){ //단, 마무리시에 일괄 죽임으로는 안되도록 
+                //     isAcheive = GameManager.instance.kill >= 10;} 
                 break;
     
             case Acheive.UnlockBean: //최대시간까지 버티면 언락
-                isAcheive = GameManager.instance.gameTime == GameManager.instance.maxGameTime;
+                // isAcheive = GameManager.instance.gameTime == GameManager.instance.maxGameTime;
                 break;
         }
 
         //해당 업적이 처음 달성했다는 조건을 if문에 작성
-        if (isAcheive && PlayerPrefs.GetInt(acheive.ToString())==0){
-            PlayerPrefs.SetInt(acheive.ToString(), 1);
-            for (int index = 0; index < uiNotice.transform.childCount; index++){
-                bool isActive = index == (int)acheive; //알림 창의 자식 오브젝트를 순회하면서 순번이 맞으면 활성화
-                uiNotice.transform.GetChild(index).gameObject.SetActive(isActive);
-            }
-            StartCoroutine(NoticeRoutine());
-        }
+        // if (isAcheive && PlayerPrefs.GetInt(acheive.ToString())==0){
+        //     PlayerPrefs.SetInt(acheive.ToString(), 1);
+        //     for (int index = 0; index < uiNotice.transform.childCount; index++){
+        //         bool isActive = index == (int)acheive; //알림 창의 자식 오브젝트를 순회하면서 순번이 맞으면 활성화
+        //         uiNotice.transform.GetChild(index).gameObject.SetActive(isActive);
+        //     }
+        //     StartCoroutine(NoticeRoutine());
+        // }
     }
 
     IEnumerator NoticeRoutine()
