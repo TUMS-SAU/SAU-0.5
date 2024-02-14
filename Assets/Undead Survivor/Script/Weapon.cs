@@ -283,6 +283,7 @@ public class Weapon : MonoBehaviour
                 else
                 {
                     bullet.Translate(new Vector3(-1, 0, 0), Space.World); //이동 방향은 Space World 기준으로 
+                    bullet.GetComponent<SpriteRenderer>().flipX = true;
                 }
                 bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //근접 무기는 계속 관통하기 때문에 per(관통)을 무한으로 관통하게 -100로 설정
             }
