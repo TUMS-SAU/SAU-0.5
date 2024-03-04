@@ -1,4 +1,4 @@
-# TUMS 0.5기
+# TUMS 0.5기 프로젝트 최우수상
 **Winter Game Project**
 
 **2023.09 ~ 2024.02**
